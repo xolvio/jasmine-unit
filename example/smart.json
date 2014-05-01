@@ -1,0 +1,7 @@
+{
+    "packages": {
+        "rtd-unit": {
+            "path": "../"
+        }
+    }
+}

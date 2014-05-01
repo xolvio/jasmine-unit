@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "rtd-unit": {
+        "path": ".."
+      }
+    },
+    "packages": {
+      "rtd-unit": {
+        "path": ".."
+      }
+    }
+  }
+}

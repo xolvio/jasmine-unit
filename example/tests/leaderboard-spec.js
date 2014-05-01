@@ -13,7 +13,6 @@
                 return someLocalCollectionCursor;
             };
             expect(Template.leaderboard.players()).toBe(someLocalCollectionCursor);
-            fail();
         });
 
     });

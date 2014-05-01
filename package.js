@@ -3,6 +3,7 @@ Package.describe({
 });
 
 Npm.depends({
+    'glob': '3.2.9',
     'jasmine-node': '1.14.3'
 });
 

@@ -21,6 +21,8 @@ var colFun = function (collectionName) {
 };
 
 Meteor = {
+    isClient: true, // these two properties expect that a user does not use a !Metoer.isClient and !Meteor.isServer
+    isServer: true, // If the above are used, when the source code is loaded, it will not
     instantiationCounts: {},
     startupFunctions: [],
     publishFunctions: {},
@@ -255,5 +257,3 @@ global.Handlebars = Handlebars;
 global.Accounts = Accounts;
 global.__meteor_bootstrap__ = __meteor_bootstrap__;
 global.share = share;
-
-console.log('** LOADED**')

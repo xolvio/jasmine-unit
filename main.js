@@ -3,25 +3,30 @@ console.log('**** RESTARTED *****');
 //    specFolders: ['/Users/sam/WebstormProjects/rtd/rtd-unit/example/tests/simple.js']
 //});
 
-console.log('node ' + process.env.PWD + '/packages/rtd-unit/.npm/package/node_modules/jasmine-node/lib/jasmine-node/cli.js', '/Users/sam/WebstormProjects/rtd/rtd-unit/example/tests/simple.js');
-
-var testFile1 = '/Users/sam/Webstorm/rtd2/rtd-unit/example/tests/simple.js';
-var testFile2  = '/Users/sam/Webstorm/rtd2/rtd-unit/example/tests/leaderboard.js';
-var stubsFolder = process.env.PWD + '/packages/rtd-unit/helpers/';
-
 var jasmineCli = process.env.PWD + '/packages/rtd-unit/.npm/package/node_modules/jasmine-node/lib/jasmine-node/cli.js',
     spawn = Npm.require('child_process').spawn,
     args = [];
 
 args.push(jasmineCli);
-args.push('--matchall');
-args.push('--coffee');
-args.push(stubsFolder);
-//args.push(testFile1);
-args.push(testFile2);
 
+args.push('--coffee');
+args.push('--color');
+
+args.push('--junitreport');
+args.push('--output');
+args.push(process.env.PWD + '/tests/.rtd-unit-report');
+
+args.push(process.env.PWD + '/packages/rtd-unit/lib');
+args.push(process.env.PWD + '/tests');
 jasmineNode = spawn('/usr/local/bin/node', args);
 
-jasmineNode.stdout.on('data', function (data) {
-    console.log('stdout: ' + data);
+var regurgitate = function (data) {
+    // TODO this should to to a test-runner visible console
+    console.log(data.toString());
+};
+jasmineNode.stdout.on('data', regurgitate);
+jasmineNode.stderr.on('data', regurgitate);
+
+jasmineNode.on('close', function (code) {
+    // TODO collect junit test reports and load them into the collection
 });

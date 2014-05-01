@@ -3,9 +3,6 @@
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = jasmine.getEnv().defaultTimeoutInterval = 20000;
 
-    Template.stub('leaderboard');
-    Template.stub('player');
-
     describe("Template.leaderboard.players", function () {
 
         it("asks for the players to be primarily in descending score order, then in alphabetical order and returns as is", function () {
@@ -16,6 +13,7 @@
                 return someLocalCollectionCursor;
             };
             expect(Template.leaderboard.players()).toBe(someLocalCollectionCursor);
+            fail();
         });
 
     });

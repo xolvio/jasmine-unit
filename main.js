@@ -13,20 +13,23 @@ var hashCode = function (s) {
             return a & a
         }, 0);
     },
+    consoleData = '',
     regurgitate = function (data) {
-        // TODO this should to to a test-runner visible console
-        // TODO wait for linefeeds before consoling out, so the dots make sense
-        console.log(data.toString());
+        consoleData += data;
+        if (consoleData.indexOf('\n') !== -1) {
+            console.log(consoleData.trim());
+            consoleData = '';
+        }
     };
 deleteFolderRecursive = function (path) {
     var files = [];
     if (fs.existsSync(path)) {
         files = fs.readdirSync(path);
-        files.forEach(function (file, index) {
+        files.forEach(function (file) {
             var curPath = path + "/" + file;
-            if (fs.lstatSync(curPath).isDirectory()) { // recurse
+            if (fs.lstatSync(curPath).isDirectory()) {
                 deleteFolderRecursive(curPath);
-            } else { // delete file
+            } else {
                 fs.unlinkSync(curPath);
             }
         });
@@ -37,6 +40,7 @@ deleteFolderRecursive = function (path) {
 args.push(jasmineCli);
 args.push('--coffee');
 args.push('--color');
+args.push('--verbose');
 args.push('--match');
 args.push('.*-rtd-unit\.');
 args.push('--matchall');
@@ -45,10 +49,6 @@ args.push('--output');
 args.push(TEST_REPORTS_DIR);
 args.push(process.env.PWD + '/packages/rtd-unit/lib');
 args.push(process.env.PWD + '/tests');
-
-
-jasmineNode.stdout.on('data', regurgitate);
-jasmineNode.stderr.on('data', regurgitate);
 
 var closeFunc = Meteor.bindEnvironment(function () {
     var newResults = [],
@@ -86,7 +86,10 @@ var closeFunc = Meteor.bindEnvironment(function () {
 
 var rerunTests = function () {
     deleteFolderRecursive(TEST_REPORTS_DIR);
-    spawn('/usr/local/bin/node', args).on('close', closeFunc);
+    var jasmineNode = spawn('/usr/local/bin/node', args);
+    jasmineNode.stdout.on('data', regurgitate);
+    jasmineNode.stderr.on('data', regurgitate);
+    jasmineNode.on('close', closeFunc);
 };
 
 MeteorTestRunnerTestFiles.find({targetFramework: 'rtd-unit'}).observe({

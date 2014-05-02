@@ -60,7 +60,7 @@ var closeFunc = Meteor.bindEnvironment(function () {
                     var result = ({
                         name: testcase.$.name,
                         framework: 'rtd-unit',
-                        result: testcase.failure ? 'fail' : 'pass',
+                        result: testcase.failure ? 'failed' : 'passed',
                         timestamp: testsuite.$.timestamp,
                         time: testcase.$.time,
                         ancestors: [testcase.$.classname]
@@ -92,7 +92,8 @@ var rerunTests = function () {
     jasmineNode.on('close', closeFunc);
 };
 
-MeteorTestRunnerTestFiles.find({targetFramework: 'rtd-unit'}).observe({
+// How can we abstract this server-side so the test frameworks don't need to know about velocity collections
+VelocityTestFiles.find({targetFramework: 'rtd-unit'}).observe({
     added: rerunTests,
     changed: rerunTests,
     removed: rerunTests

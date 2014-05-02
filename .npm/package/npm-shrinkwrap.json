@@ -60,17 +60,7 @@
               }
             },
             "fileset": {
-              "version": "0.1.5",
-              "dependencies": {
-                "glob": {
-                  "version": "3.2.9",
-                  "dependencies": {
-                    "inherits": {
-                      "version": "2.0.1"
-                    }
-                  }
-                }
-              }
+              "version": "0.1.5"
             }
           }
         },

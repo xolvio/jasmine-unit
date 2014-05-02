@@ -1,5 +1,5 @@
 Package.describe({
-    summary: "RTD Unit - A Framework that runs in Meteor Test Runner"
+    summary: "RTD Unit - A test framework that runs in Velocity"
 });
 
 Npm.depends({
@@ -10,6 +10,6 @@ Npm.depends({
 });
 
 Package.on_use(function (api) {
-    api.use(['meteor-test-runner']);
+    api.use(['velocity']);
     api.add_files('main.js', ['server']);
 });

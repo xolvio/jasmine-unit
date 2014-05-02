@@ -78,6 +78,25 @@
           "version": "0.3.5"
         }
       }
+    },
+    "lodash": {
+      "version": "2.4.1"
+    },
+    "xml2js": {
+      "version": "0.4.2",
+      "dependencies": {
+        "sax": {
+          "version": "0.5.8"
+        },
+        "xmlbuilder": {
+          "version": "2.2.1",
+          "dependencies": {
+            "lodash-node": {
+              "version": "2.4.1"
+            }
+          }
+        }
+      }
     }
   }
 }

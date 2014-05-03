@@ -86,7 +86,7 @@ var closeFunc = Meteor.bindEnvironment(function () {
 
 var rerunTests = function () {
     deleteFolderRecursive(TEST_REPORTS_DIR);
-    var jasmineNode = spawn('/usr/local/bin/node', args);
+    var jasmineNode = spawn(process.execPath, args);
     jasmineNode.stdout.on('data', regurgitate);
     jasmineNode.stderr.on('data', regurgitate);
     jasmineNode.on('close', closeFunc);

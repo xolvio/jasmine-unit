@@ -1,0 +1,193 @@
+{
+    "project": {
+        "name": "RTD Unit",
+        "description": "Velocity-compatible unit test package with jasmine syntax",
+        "version": "v0.0.1"
+    },
+    "files": {
+        "lib/coffee-require.js": {
+            "name": "lib/coffee-require.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/file-loader.js": {
+            "name": "lib/file-loader.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/html-scanner.js": {
+            "name": "lib/html-scanner.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/load-order-sort.js": {
+            "name": "lib/load-order-sort.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/stub-loader.js": {
+            "name": "lib/stub-loader.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {},
+    "classitems": [
+        {
+            "file": "lib/coffee-require.js",
+            "line": 22,
+            "description": "Load and execute a coffeescript file.",
+            "itemtype": "method",
+            "name": "coffeeRequire",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "Path to coffeescript file to load.",
+                    "type": "String"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "lib/file-loader.js",
+            "line": 22,
+            "description": "Loads a Meteor app's javascript and coffeescript files.\nMatches Meteor core's load order.\n\nExcluded directories: private, public, programs, packages, tests",
+            "itemtype": "method",
+            "name": "loadFiles",
+            "class": ""
+        },
+        {
+            "file": "lib/file-loader.js",
+            "line": 37,
+            "description": "Returns list of javascript filenames in Meteor app.\n\nExcluded directories: private, public, programs, packages, tests",
+            "itemtype": "method",
+            "name": "getJsFiles",
+            "return": {
+                "description": "list of filenames",
+                "type": "Array"
+            },
+            "class": ""
+        },
+        {
+            "file": "lib/file-loader.js",
+            "line": 51,
+            "description": "Returns list of coffeescript files in Meteor app.\n\nExcluded directories: private, public, programs, packages, tests",
+            "itemtype": "method",
+            "name": "getCoffeeFiles",
+            "return": {
+                "description": "list of filenames",
+                "type": "Array"
+            },
+            "class": ""
+        },
+        {
+            "file": "lib/file-loader.js",
+            "line": 65,
+            "description": "Filters out any files in the following directories:\n  private\n  public\n  programs\n  packages\n  tests",
+            "itemtype": "method",
+            "name": "filterFiles",
+            "params": [
+                {
+                    "name": "files",
+                    "description": "array of filenames to filter",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "filenames",
+                "type": "Array"
+            },
+            "class": ""
+        },
+        {
+            "file": "lib/file-loader.js",
+            "line": 88,
+            "description": "Load and execute the target source file.\nWill use node's 'require' if source file has a .js extension or\nkarma's coffeescript preprocessor if a .coffee extension",
+            "itemtype": "method",
+            "name": "loadFile",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "file path to load, relative to meteor app",
+                    "type": "String"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "lib/html-scanner.js",
+            "line": 7,
+            "description": "Scan all html files in Meteor app and return list of template names.",
+            "itemtype": "method",
+            "name": "findTemplateNames",
+            "params": [
+                {
+                    "name": "targetDir",
+                    "description": "Optional path to directory to scan.  Default = PWD",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "list of template names",
+                "type": "Array"
+            },
+            "class": ""
+        },
+        {
+            "file": "lib/load-order-sort.js",
+            "line": 9,
+            "description": "Returns a sort comparator to order files into Meteor app load order.\ntemplateExtensions should be a list of extensions like 'html'\nwhich should be loaded before other extensions.\n\nsource: Meteor core file\n  https://github.com/meteor/meteor/blob/devel/tools/packages.js#L47-L97\n  May 5, 2014",
+            "itemtype": "method",
+            "name": "loadOrderSort",
+            "params": [
+                {
+                    "name": "[templateExtensions}",
+                    "description": "Optional array of extensions which will\n               be loaded first.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "Either 1 or -1 depending on sort result",
+                "type": "Number"
+            },
+            "class": ""
+        },
+        {
+            "file": "lib/stub-loader.js",
+            "line": 12,
+            "description": "Load framework-supplied stubs.  Stub files are located in the \n'packages/rtd-unit/stubs' directory and end in -stub.js\n\nExample:\n  packages/rtd-unit/stubs/meteor-stub.js",
+            "itemtype": "method",
+            "name": "loadFrameworkStubs",
+            "class": ""
+        },
+        {
+            "file": "lib/stub-loader.js",
+            "line": 26,
+            "description": "Load user-defined stubs.  Stub files should be located in the 'tests' \ndirectory and end in -stub.js\n\nExample:\n  tests/custom-stub.js",
+            "itemtype": "method",
+            "name": "loadUserStubs",
+            "class": ""
+        },
+        {
+            "file": "lib/stub-loader.js",
+            "line": 39,
+            "description": "Create stubs for each template defined in the Meteor app.",
+            "itemtype": "method",
+            "name": "stubTemplates",
+            "class": ""
+        }
+    ],
+    "warnings": []
+}

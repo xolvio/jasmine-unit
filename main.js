@@ -1,11 +1,11 @@
-var jasmineCli = process.env.PWD + '/packages/rtd-unit/.npm/package/node_modules/jasmine-node/lib/jasmine-node/cli.js',
+var jasmineCli = process.env.PWD + '/packages/velocity-jasmine-unit/.npm/package/node_modules/jasmine-node/lib/jasmine-node/cli.js',
     spawn = Npm.require('child_process').spawn,
     parseString = Npm.require('xml2js').parseString,
     glob = Npm.require('glob'),
     fs = Npm.require('fs'),
     _ = Npm.require('lodash'),
     args = [],
-    TEST_REPORTS_DIR = process.env.PWD + '/tests/.reports/rtd-unit';
+    TEST_REPORTS_DIR = process.env.PWD + '/tests/.reports/jasmine-unit';
 
 var hashCode = function (s) {
         return s.split("").reduce(function (a, b) {
@@ -42,12 +42,12 @@ args.push('--coffee');
 args.push('--color');
 args.push('--verbose');
 args.push('--match');
-args.push('.*-rtd-unit\.');
+args.push('.*-jasmine-unit\.');
 args.push('--matchall');
 args.push('--junitreport');
 args.push('--output');
 args.push(TEST_REPORTS_DIR);
-args.push(process.env.PWD + '/packages/rtd-unit/lib');
+args.push(process.env.PWD + '/packages/velocity-jasmine-unit/lib');
 args.push(process.env.PWD + '/tests');
 
 var closeFunc = Meteor.bindEnvironment(function () {
@@ -72,14 +72,14 @@ var closeFunc = Meteor.bindEnvironment(function () {
                             result.failureStackTrace = failure._;
                         });
                     }
-                    result.id = 'rtd-unit:' + hashCode(xmlFile + testcase.$.classname + testcase.$.name);
+                    result.id = 'jasmine-unit:' + hashCode(xmlFile + testcase.$.classname + testcase.$.name);
                     newResults.push(result.id);
                     Meteor.call('postResult', result);
                 });
             });
         });
         if (index === xmlFiles.length - 1) {
-            Meteor.call('resetReports', {framework: 'rtd-unit', notIn: newResults});
+            Meteor.call('resetReports', {framework: 'jasmine-unit', notIn: newResults});
         }
     });
 });
@@ -93,9 +93,11 @@ var rerunTests = function () {
 };
 
 // How can we abstract this server-side so the test frameworks don't need to know about velocity collections
-VelocityTestFiles.find({targetFramework: 'rtd-unit'}).observe({
+VelocityTestFiles.find({targetFramework: 'jasmine-unit'}).observe({
     added: rerunTests,
     changed: rerunTests,
     removed: rerunTests
 });
+
+console.log('Velocity Jasmine-Unit is loaded');
 

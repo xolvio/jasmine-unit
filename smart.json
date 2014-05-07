@@ -1,0 +1,8 @@
+{
+    "name": "velocity-jasmine-unit",
+    "description": "Velocity-compatible unit test package with jasmine syntax",
+    "homepage": "https://github.com/xolvio/velocity-jasmine-unit",
+    "author": "Sam Hatoum",
+    "version": "0.1.0",
+    "git": "https://github.com/xolvio/velocity-jasmine-unit.git"
+}

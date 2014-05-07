@@ -1,5 +1,5 @@
 Package.describe({
-    summary: "RTD Unit - A test framework that runs in Velocity"
+    summary: "Velocity Jasmine-Unit - A test framework that runs in Velocity"
 });
 
 Npm.depends({

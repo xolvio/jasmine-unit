@@ -1,5 +1,5 @@
 {
-  "name": "RTD Unit",
+  "name": "Velocity Jasmine-Unit",
   "description": "Velocity-compatible unit test package with jasmine syntax",
   "version": "v0.0.1",
   "options": {

@@ -7,9 +7,7 @@ Npm.depends({
     "lodash": "2.4.1",
     'xml2js': '0.4.2',
     'jasmine-node': '1.14.3',
-    'karma': '0.11.14',
-    'karma-coffee-preprocessor': '0.2.1',
-    'better-require' : '0.0.3'
+    "coffee-script": "1.7.1"
 });
 
 Package.on_use(function (api) {

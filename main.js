@@ -1,41 +1,25 @@
-var jasmineCli = process.env.PWD + '/packages/velocity-jasmine-unit/.npm/package/node_modules/jasmine-node/lib/jasmine-node/cli.js',
+;(function () {
+  
+"use strict";
+
+var ANNOUNCE_STRING = 'Velocity Jasmine-Unit is loaded',
+    pwd = process.env.PWD,
     spawn = Npm.require('child_process').spawn,
     parseString = Npm.require('xml2js').parseString,
     glob = Npm.require('glob'),
     fs = Npm.require('fs'),
+    path = Npm.require('path'),
     _ = Npm.require('lodash'),
+    rimraf = Npm.require('rimraf'),
+    testReportsPath = path.join(pwd,'tests','.reports','jasmine-unit'),
     args = [],
-    TEST_REPORTS_DIR = process.env.PWD + '/tests/.reports/jasmine-unit';
-
-var hashCode = function (s) {
-        return s.split("").reduce(function (a, b) {
-            a = ((a << 5) - a) + b.charCodeAt(0);
-            return a & a
-        }, 0);
-    },
     consoleData = '',
-    regurgitate = function (data) {
-        consoleData += data;
-        if (consoleData.indexOf('\n') !== -1) {
-            console.log(consoleData.trim());
-            consoleData = '';
-        }
-    };
-deleteFolderRecursive = function (path) {
-    var files = [];
-    if (fs.existsSync(path)) {
-        files = fs.readdirSync(path);
-        files.forEach(function (file) {
-            var curPath = path + "/" + file;
-            if (fs.lstatSync(curPath).isDirectory()) {
-                deleteFolderRecursive(curPath);
-            } else {
-                fs.unlinkSync(curPath);
-            }
-        });
-        fs.rmdirSync(path);
-    }
-};
+    jasmineCli,
+    closeFunc;
+
+
+// build OS-independent path to jasmine cli
+jasmineCli = pwd + ',packages,velocity-jasmine-unit,.npm,package,node_modules,jasmine-node,lib,jasmine-node,cli.js'.split(',').join(path.sep);
 
 args.push(jasmineCli);
 args.push('--coffee');
@@ -46,51 +30,9 @@ args.push('.*-jasmine-unit\.');
 args.push('--matchall');
 args.push('--junitreport');
 args.push('--output');
-args.push(TEST_REPORTS_DIR);
-args.push(process.env.PWD + '/packages/velocity-jasmine-unit/lib');
-args.push(process.env.PWD + '/tests');
-
-var closeFunc = Meteor.bindEnvironment(function () {
-    var newResults = [],
-        xmlFiles = glob.sync('**/TEST-*.xml', { cwd: TEST_REPORTS_DIR });
-    _.each(xmlFiles, function (xmlFile, index) {
-        parseString(fs.readFileSync(TEST_REPORTS_DIR + '/' + xmlFile), function (err, result) {
-            _.each(result.testsuites.testsuite, function (testsuite) {
-                _.each(testsuite.testcase, function (testcase) {
-                    var result = ({
-                        name: testcase.$.name,
-                        framework: 'rtd-unit',
-                        result: testcase.failure ? 'failed' : 'passed',
-                        timestamp: testsuite.$.timestamp,
-                        time: testcase.$.time,
-                        ancestors: [testcase.$.classname]
-                    });
-                    if (testcase.failure) {
-                        _.each(testcase.failure, function (failure) {
-                            result.failureType = failure.$.type;
-                            result.failureMessage = failure.$.message;
-                            result.failureStackTrace = failure._;
-                        });
-                    }
-                    result.id = 'jasmine-unit:' + hashCode(xmlFile + testcase.$.classname + testcase.$.name);
-                    newResults.push(result.id);
-                    Meteor.call('postResult', result);
-                });
-            });
-        });
-        if (index === xmlFiles.length - 1) {
-            Meteor.call('resetReports', {framework: 'jasmine-unit', notIn: newResults});
-        }
-    });
-});
-
-var rerunTests = function () {
-    deleteFolderRecursive(TEST_REPORTS_DIR);
-    var jasmineNode = spawn(process.execPath, args);
-    jasmineNode.stdout.on('data', regurgitate);
-    jasmineNode.stderr.on('data', regurgitate);
-    jasmineNode.on('close', closeFunc);
-};
+args.push(testReportsPath);
+args.push(path.join(pwd,'packages','velocity-jasmine-unit','lib'));
+args.push(path.join(pwd,'tests'));
 
 // How can we abstract this server-side so the test frameworks don't need to know about velocity collections
 VelocityTestFiles.find({targetFramework: 'jasmine-unit'}).observe({
@@ -99,5 +41,74 @@ VelocityTestFiles.find({targetFramework: 'jasmine-unit'}).observe({
     removed: rerunTests
 });
 
-console.log('Velocity Jasmine-Unit is loaded');
+console.log(ANNOUNCE_STRING);
 
+
+
+
+//////////////////////////////////////////////////////////////////////
+// private functions
+//
+
+function hashCode (s) {
+  return s.split("").reduce(function (a, b) {
+    a = ((a << 5) - a) + b.charCodeAt(0);
+    return a & a;
+  }, 0);
+}
+
+function regurgitate (data) {
+  consoleData += data;
+  if (consoleData.indexOf('\n') !== -1) {
+    console.log(consoleData.trim());
+    consoleData = '';
+  }
+};
+
+closeFunc = Meteor.bindEnvironment(function () {
+  var newResults = [],
+      globSearchString = path.join('**', 'TEST-*.xml'),
+      xmlFiles = glob.sync(globSearchString, { cwd: testReportsPath });
+
+  _.each(xmlFiles, function (xmlFile, index) {
+    parseString(fs.readFileSync(testReportsPath + path.sep + xmlFile), function (err, result) {
+      _.each(result.testsuites.testsuite, function (testsuite) {
+        _.each(testsuite.testcase, function (testcase) {
+          var result = ({
+              name: testcase.$.name,
+              framework: 'rtd-unit',
+              result: testcase.failure ? 'failed' : 'passed',
+              timestamp: testsuite.$.timestamp,
+              time: testcase.$.time,
+              ancestors: [testcase.$.classname]
+          });
+
+          if (testcase.failure) {
+            _.each(testcase.failure, function (failure) {
+              result.failureType = failure.$.type;
+              result.failureMessage = failure.$.message;
+              result.failureStackTrace = failure._;
+            });
+          }
+          result.id = 'jasmine-unit:' + hashCode(xmlFile + testcase.$.classname + testcase.$.name);
+          newResults.push(result.id);
+          Meteor.call('postResult', result);
+        });
+      });
+    });
+
+    if (index === xmlFiles.length - 1) {
+      Meteor.call('resetReports', {framework: 'jasmine-unit', notIn: newResults});
+    }
+  });
+});  // end closeFunc
+
+function rerunTests () {
+    rimraf.sync(testReportsPath);
+    var jasmineNode = spawn(process.execPath, args);
+    jasmineNode.stdout.on('data', regurgitate);
+    jasmineNode.stderr.on('data', regurgitate);
+    jasmineNode.on('close', closeFunc);
+};
+
+})();

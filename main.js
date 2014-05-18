@@ -57,13 +57,18 @@ function hashCode (s) {
   }, 0);
 }
 
-function regurgitate (data) {
+var regurgitate = Meteor.bindEnvironment(function(data) {
   consoleData += data;
   if (consoleData.indexOf('\n') !== -1) {
     console.log(consoleData.trim());
+    Meteor.call('postLog', {
+        type: 'out',
+        framework: 'jasmine-unit',
+        message: consoleData.trim()
+    });
     consoleData = '';
   }
-};
+});
 
 closeFunc = Meteor.bindEnvironment(function () {
   var newResults = [],
@@ -109,6 +114,6 @@ function rerunTests () {
     jasmineNode.stdout.on('data', regurgitate);
     jasmineNode.stderr.on('data', regurgitate);
     jasmineNode.on('close', closeFunc);
-};
+}
 
 })();

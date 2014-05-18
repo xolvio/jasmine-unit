@@ -109,6 +109,6 @@ function rerunTests () {
     jasmineNode.stdout.on('data', regurgitate);
     jasmineNode.stderr.on('data', regurgitate);
     jasmineNode.on('close', closeFunc);
-};
+}
 
 })();

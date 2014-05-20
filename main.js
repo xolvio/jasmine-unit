@@ -11,7 +11,7 @@ var ANNOUNCE_STRING = 'Velocity Jasmine-Unit is loaded',
     path = Npm.require('path'),
     _ = Npm.require('lodash'),
     rimraf = Npm.require('rimraf'),
-    testReportsPath = path.join(pwd,'tests','.reports','velocity-jasmine-unit'),
+    testReportsPath = path.join(pwd,'tests','.reports','jasmine-unit'),
     args = [],
     consoleData = '',
     jasmineCli,
@@ -19,7 +19,7 @@ var ANNOUNCE_STRING = 'Velocity Jasmine-Unit is loaded',
 
 
 // build OS-independent path to jasmine cli
-jasmineCli = pwd + ',packages,velocity-jasmine-unit,.npm,package,node_modules,jasmine-node,lib,jasmine-node,cli.js'.split(',').join(path.sep);
+jasmineCli = pwd + ',packages,jasmine-unit,.npm,package,node_modules,jasmine-node,lib,jasmine-node,cli.js'.split(',').join(path.sep);
 
 args.push(jasmineCli);
 args.push('--coffee');
@@ -31,11 +31,11 @@ args.push('--matchall');
 args.push('--junitreport');
 args.push('--output');
 args.push(testReportsPath);
-args.push(path.join(pwd,'packages','velocity-jasmine-unit','lib'));
+args.push(path.join(pwd,'packages','jasmine-unit','lib'));
 args.push(path.join(pwd,'tests'));
 
 // How can we abstract this server-side so the test frameworks don't need to know about velocity collections
-VelocityTestFiles.find({targetFramework: 'velocity-jasmine-unit'}).observe({
+VelocityTestFiles.find({targetFramework: 'jasmine-unit'}).observe({
     added: rerunTests,
     changed: rerunTests,
     removed: rerunTests
@@ -63,7 +63,7 @@ var regurgitate = Meteor.bindEnvironment(function(data) {
     console.log(consoleData.trim());
     Meteor.call('postLog', {
         type: 'out',
-        framework: 'velocity-jasmine-unit',
+        framework: 'jasmine-unit',
         message: consoleData.trim()
     });
     consoleData = '';
@@ -95,7 +95,7 @@ closeFunc = Meteor.bindEnvironment(function () {
               result.failureStackTrace = failure._;
             });
           }
-          result.id = 'velocity-jasmine-unit:' + hashCode(xmlFile + testcase.$.classname + testcase.$.name);
+          result.id = 'jasmine-unit:' + hashCode(xmlFile + testcase.$.classname + testcase.$.name);
           newResults.push(result.id);
           Meteor.call('postResult', result);
         });
@@ -103,7 +103,7 @@ closeFunc = Meteor.bindEnvironment(function () {
     });
 
     if (index === xmlFiles.length - 1) {
-      Meteor.call('resetReports', {framework: 'velocity-jasmine-unit', notIn: newResults});
+      Meteor.call('resetReports', {framework: 'jasmine-unit', notIn: newResults});
     }
   });
 });  // end closeFunc

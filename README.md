@@ -8,8 +8,8 @@ To view documentation locally:
 
 ```bash
 $ npm -g install yuidocjs
-$ git clone https://github.com/xolvio/velocity-jasmine-unit.git
-$ cd velocity-jasmine-unit
+$ git clone https://github.com/xolvio/jasmine-unit.git
+$ cd jasmine-unit
 $ yuidoc --server
 $ open http://localhost:3000/
 ```

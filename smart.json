@@ -1,10 +1,10 @@
 {
-    "name": "velocity-jasmine-unit",
+    "name": "jasmine-unit",
     "description": "Velocity-compatible unit test package with jasmine syntax",
-    "homepage": "https://github.com/xolvio/velocity-jasmine-unit",
+    "homepage": "https://github.com/xolvio/jasmine-unit",
     "author": "Sam Hatoum",
-    "version": "0.1.1",
-    "git": "https://github.com/xolvio/velocity-jasmine-unit.git",
+    "version": "0.1.4",
+    "git": "https://github.com/xolvio/jasmine-unit.git",
     "testPackage": true,
     "regex": "-jasmine-unit.(js|coffee)$"
 }

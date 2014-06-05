@@ -8,7 +8,8 @@ Npm.depends({
     'rimraf': '2.2.8',
     'xml2js': '0.4.2',
     'jasmine-node': '1.14.3',
-    "coffee-script": "1.7.1"
+    'coffee-script': '1.7.1',
+    'meteor-stubs': '0.0.1'
 });
 
 Package.on_use(function (api) {

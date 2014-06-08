@@ -1,8 +1,8 @@
 {
     "project": {
-        "name": "RTD Unit",
+        "name": "Velocity Jasmine-Unit",
         "description": "Velocity-compatible unit test package with jasmine syntax",
-        "version": "v0.0.1"
+        "version": "v0.1.7"
     },
     "files": {
         "lib/coffee-require.js": {
@@ -33,6 +33,17 @@
             "fors": {},
             "namespaces": {}
         },
+        "lib/loader-helper.js": {
+            "name": "lib/loader-helper.js",
+            "modules": {
+                "velocityJasmineUnit": 1
+            },
+            "classes": {
+                "velocityJasmineUnit": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "lib/stub-loader.js": {
             "name": "lib/stub-loader.js",
             "modules": {},
@@ -41,12 +52,58 @@
             "namespaces": {}
         }
     },
-    "modules": {},
-    "classes": {},
+    "modules": {
+        "velocityJasmineUnit": {
+            "name": "velocityJasmineUnit",
+            "submodules": {},
+            "classes": {
+                "velocityJasmineUnit": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/loader-helper.js",
+            "line": 21,
+            "description": "See `velocityJasmineUnit` class",
+            "example": [
+                "\n    var stubLoader = require('./stub-loader.js'),\n        fileLoader = require('./file-loader.js');\n\n    // load any stubs; auto-stub any templates found in Meteor app\n    stubLoader.loadFrameworkStubs()\n    stubLoader.stubTemplates();\n    stubLoader.loadUserStubs()\n    \n    // load Meteor app source files prior to running tests\n    fileLoader.loadFiles();\n"
+            ]
+        }
+    },
+    "classes": {
+        "velocityJasmineUnit": {
+            "name": "velocityJasmineUnit",
+            "shortname": "velocityJasmineUnit",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "velocityJasmineUnit",
+            "namespace": "",
+            "file": "lib/loader-helper.js",
+            "line": 21
+        }
+    },
     "classitems": [
         {
             "file": "lib/coffee-require.js",
-            "line": 22,
+            "line": 18,
+            "description": "A coffee processor that can add source maps to compiled files\n\nThis is a modified version of https://github.com/karma-runner/karma-coffee-preprocessor",
+            "itemtype": "method",
+            "name": "coffeePreprocessor",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "to pass directly to the coffee-script compiler. See here",
+                    "type": "Object"
+                }
+            ],
+            "class": "velocityJasmineUnit"
+        },
+        {
+            "file": "lib/coffee-require.js",
+            "line": 54,
             "description": "Load and execute a coffeescript file.",
             "itemtype": "method",
             "name": "coffeeRequire",
@@ -57,7 +114,7 @@
                     "type": "String"
                 }
             ],
-            "class": ""
+            "class": "velocityJasmineUnit"
         },
         {
             "file": "lib/file-loader.js",
@@ -65,7 +122,7 @@
             "description": "Loads a Meteor app's javascript and coffeescript files.\nMatches Meteor core's load order.\n\nExcluded directories: private, public, programs, packages, tests",
             "itemtype": "method",
             "name": "loadFiles",
-            "class": ""
+            "class": "velocityJasmineUnit"
         },
         {
             "file": "lib/file-loader.js",
@@ -75,9 +132,9 @@
             "name": "getJsFiles",
             "return": {
                 "description": "list of filenames",
-                "type": "Array"
+                "type": "Array.<String>"
             },
-            "class": ""
+            "class": "velocityJasmineUnit"
         },
         {
             "file": "lib/file-loader.js",
@@ -87,14 +144,14 @@
             "name": "getCoffeeFiles",
             "return": {
                 "description": "list of filenames",
-                "type": "Array"
+                "type": "Array.<String>"
             },
-            "class": ""
+            "class": "velocityJasmineUnit"
         },
         {
             "file": "lib/file-loader.js",
             "line": 65,
-            "description": "Filters out any files in the following directories:\n  private\n  public\n  programs\n  packages\n  tests",
+            "description": "Filters out any files in the following directories:\n  private,\n  public,\n  programs,\n  packages,\n  tests",
             "itemtype": "method",
             "name": "filterFiles",
             "params": [
@@ -108,7 +165,7 @@
                 "description": "filenames",
                 "type": "Array"
             },
-            "class": ""
+            "class": "velocityJasmineUnit"
         },
         {
             "file": "lib/file-loader.js",
@@ -123,7 +180,7 @@
                     "type": "String"
                 }
             ],
-            "class": ""
+            "class": "velocityJasmineUnit"
         },
         {
             "file": "lib/html-scanner.js",
@@ -143,7 +200,7 @@
                 "description": "list of template names",
                 "type": "Array"
             },
-            "class": ""
+            "class": "velocityJasmineUnit"
         },
         {
             "file": "lib/load-order-sort.js",
@@ -162,31 +219,34 @@
                 "description": "Either 1 or -1 depending on sort result",
                 "type": "Number"
             },
-            "class": ""
+            "class": "velocityJasmineUnit"
         },
         {
             "file": "lib/stub-loader.js",
             "line": 12,
-            "description": "Load framework-supplied stubs.  Stub files are located in the \n'packages/rtd-unit/stubs' directory and end in -stub.js\n\nExample:\n  packages/rtd-unit/stubs/meteor-stub.js",
+            "description": "Load framework-supplied stubs.  Stub files are located in the \n'packages/jasmine-unit/stubs' directory and end in -stub.js\n\nExample:\n  packages/jasmine-unit/stubs/router-stub.js",
             "itemtype": "method",
             "name": "loadFrameworkStubs",
-            "class": ""
+            "class": "",
+            "module": "velocityJasmineUnit"
         },
         {
             "file": "lib/stub-loader.js",
-            "line": 26,
+            "line": 28,
             "description": "Load user-defined stubs.  Stub files should be located in the 'tests' \ndirectory and end in -stub.js\n\nExample:\n  tests/custom-stub.js",
             "itemtype": "method",
             "name": "loadUserStubs",
-            "class": ""
+            "class": "",
+            "module": "velocityJasmineUnit"
         },
         {
             "file": "lib/stub-loader.js",
-            "line": 39,
+            "line": 41,
             "description": "Create stubs for each template defined in the Meteor app.",
             "itemtype": "method",
             "name": "stubTemplates",
-            "class": ""
+            "class": "",
+            "module": "velocityJasmineUnit"
         }
     ],
     "warnings": []

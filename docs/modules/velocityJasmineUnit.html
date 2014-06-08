@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Velocity Jasmine-Unit</title>
+    <title>velocityJasmineUnit - Velocity Jasmine-Unit</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
-    <link rel="stylesheet" href="./assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="./assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="./assets/favicon.png">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
     <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="./assets/css/logo.png" title="Velocity Jasmine-Unit"></h1>
+                <h1><img src="../assets/css/logo.png" title="Velocity Jasmine-Unit"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,13 +41,13 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="./classes/velocityJasmineUnit.html">velocityJasmineUnit</a></li>
+                <li><a href="../classes/velocityJasmineUnit.html">velocityJasmineUnit</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="./modules/velocityJasmineUnit.html">velocityJasmineUnit</a></li>
+                <li><a href="../modules/velocityJasmineUnit.html">velocityJasmineUnit</a></li>
             
             </ul>
         </div>
@@ -84,27 +84,68 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                            <div class="apidocs">
-        <div id="docs-main" class="content">
-            <p>
-            Browse to a module or class using the sidebar to view its API documentation.
-            </p>
+                        <h1>velocityJasmineUnit Module</h1>
+<div class="box clearfix meta">
+    
 
-            <h2>Keyboard Shortcuts</h2>
+    
 
-            <ul>
-                <li><p>Press <kbd>s</kbd> to focus the API search box.</p></li>
+    
+        <div class="foundat">
+            Defined in: <a href="../files/lib_loader-helper.js.html#l21"><code>lib&#x2F;loader-helper.js:21</code></a>
+        </div>
+    
 
-                <li><p>Use <kbd>Up</kbd> and <kbd>Down</kbd> to select classes, modules, and search results.</p></li>
+    
+</div>
 
-                <li class="mac-only"><p>With the API search box or sidebar focused, use <kbd><span class="cmd">&#x2318;</span>-Left</kbd> or <kbd><span class="cmd">&#x2318;</span>-Right</kbd> to switch sidebar tabs.</p></li>
 
-                <li class="pc-only"><p>With the API search box or sidebar focused, use <kbd>Ctrl+Left</kbd> and <kbd>Ctrl+Right</kbd> to switch sidebar tabs.</p></li>
-            </ul>
+
+<div class="box intro">
+    <p>See <code>velocityJasmineUnit</code> class</p>
+
+</div>
+
+
+    <div class="example">
+        <h4>Example:</h4>
+        <div class="example-content">
+            <pre class="code prettyprint"><code>var stubLoader = require(&#39;./stub-loader.js&#39;),
+    fileLoader = require(&#39;./file-loader.js&#39;);
+
+// load any stubs; auto-stub any templates found in Meteor app
+stubLoader.loadFrameworkStubs()
+stubLoader.stubTemplates();
+stubLoader.loadUserStubs()
+
+// load Meteor app source files prior to running tests
+fileLoader.loadFiles();</code></pre>
+
         </div>
     </div>
 
 
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+            <p>This module provides the following classes:</p>
+
+            <ul class="module-classes">
+            
+                <li class="module-class">
+                    <a href="../classes/velocityJasmineUnit.html">
+                        velocityJasmineUnit
+                    </a>
+                </li>
+            
+            </ul>
+        
+    </div>
+
+    <div class="yui3-u-1-2">
+        
+    </div>
+</div>
 
                     </div>
                 </div>
@@ -112,13 +153,13 @@
         </div>
     </div>
 </div>
-<script src="./assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="./assets/js/yui-prettify.js"></script>
-<script src="./assets/../api.js"></script>
-<script src="./assets/js/api-filter.js"></script>
-<script src="./assets/js/api-list.js"></script>
-<script src="./assets/js/api-search.js"></script>
-<script src="./assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

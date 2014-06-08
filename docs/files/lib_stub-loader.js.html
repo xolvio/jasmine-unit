@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/stub-loader.js - RTD Unit</title>
+    <title>lib/stub-loader.js - Velocity Jasmine-Unit</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,11 +15,11 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../assets/css/logo.png" title="RTD Unit"></h1>
+                <h1><img src="../assets/css/logo.png" title="Velocity Jasmine-Unit"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v0.0.1</em>
+            <em>API Docs for: v0.1.7</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -41,9 +41,13 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/velocityJasmineUnit.html">velocityJasmineUnit</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/velocityJasmineUnit.html">velocityJasmineUnit</a></li>
             
             </ul>
         </div>
@@ -91,21 +95,23 @@
 var PWD = process.env.PWD,
     DEBUG = process.env.DEBUG,
     path = require(&#x27;path&#x27;),
-    glob = require(PWD + &#x27;/packages/rtd-unit/.npm/package/node_modules/glob&#x27;);
+    glob = require(PWD + &#x27;/packages/jasmine-unit/.npm/package/node_modules/glob&#x27;);
 
 module.exports = {
 
   /**
    * Load framework-supplied stubs.  Stub files are located in the 
-   * &#x27;packages/rtd-unit/stubs&#x27; directory and end in -stub.js
+   * &#x27;packages/jasmine-unit/stubs&#x27; directory and end in -stub.js
    *
    * Example:
-   *   packages/rtd-unit/stubs/meteor-stub.js
+   *   packages/jasmine-unit/stubs/router-stub.js
    *
    * @method loadFrameworkStubs 
    */
   loadFrameworkStubs: function () {
-    var dir = path.join(&#x27;packages&#x27;, &#x27;rtd-unit&#x27;, &#x27;stubs&#x27;);
+    var dir = path.join(&#x27;packages&#x27;, &#x27;jasmine-unit&#x27;, &#x27;stubs&#x27;);
+
+    require(PWD + &#x27;/packages/jasmine-unit/.npm/package/node_modules/meteor-stubs&#x27;);
     _loadStubs(dir);
   },
 

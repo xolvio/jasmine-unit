@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/coffee-require.js - RTD Unit</title>
+    <title>lib/coffee-require.js - Velocity Jasmine-Unit</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,11 +15,11 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../assets/css/logo.png" title="RTD Unit"></h1>
+                <h1><img src="../assets/css/logo.png" title="Velocity Jasmine-Unit"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v0.0.1</em>
+            <em>API Docs for: v0.1.7</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -41,9 +41,13 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/velocityJasmineUnit.html">velocityJasmineUnit</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/velocityJasmineUnit.html">velocityJasmineUnit</a></li>
             
             </ul>
         </div>
@@ -87,23 +91,55 @@
 &quot;use strict&quot;;
 
 // coffeeRequire
-
 var fs = require(&#x27;fs&#x27;),
     vm = require(&#x27;vm&#x27;),
     path = require(&#x27;path&#x27;),
     PWD = process.env.PWD,
-    NODE_MODULES = path.join(PWD, &#x27;packages&#x27;,&#x27;rtd-unit&#x27;,&#x27;.npm&#x27;,&#x27;package&#x27;,&#x27;node_modules&#x27;),
-    karmaPath = path.join(NODE_MODULES, &#x27;karma-coffee-preprocessor&#x27;),
-    preprocessorGenerator = require(karmaPath)[&#x27;preprocessor:coffee&#x27;][1],
-    karmaLogger = require(path.join(NODE_MODULES, &#x27;karma&#x27;,&#x27;lib&#x27;,&#x27;logger.js&#x27;)),
-    karmaHelper = require(path.join(NODE_MODULES, &#x27;karma&#x27;,&#x27;lib&#x27;,&#x27;helper.js&#x27;)),
-    karmaOptions = {
-      options: {
-        bare: true,
-        sourceMap: false
-      }
-    },
-    karmaCoffeePreprocessor = preprocessorGenerator(karmaOptions, {}, karmaLogger, karmaHelper);
+    NODE_MODULES = path.join(PWD, &#x27;packages&#x27;, &#x27;jasmine-unit&#x27;, &#x27;.npm&#x27;, &#x27;package&#x27;, &#x27;node_modules&#x27;),
+    coffee = require(path.join(NODE_MODULES, &#x27;coffee-script&#x27;)),
+    _ = require(path.join(NODE_MODULES, &#x27;lodash&#x27;));
+
+var merge = function () {
+    var args = Array.prototype.slice.call(arguments, 0);
+    args.unshift({});
+    return _.merge.apply({}, args);
+};
+
+/**
+ * A coffee processor that can add source maps to compiled files
+ *
+ * This is a modified version of https://github.com/karma-runner/karma-coffee-preprocessor
+ *
+ * @method coffeePreprocessor
+ * @param {Object} options to pass directly to the coffee-script compiler. See here
+ */
+var coffeePreprocessor = function (options, content, file, done) {
+    var result = null;
+    var map;
+    var datauri;
+
+    // Clone the options because coffee.compile mutates them
+    var opts = _.clone(options)
+
+    try {
+        result = coffee.compile(content, opts);
+    } catch (e) {
+        console.log(&#x27;%s\n  at %s:%d&#x27;, e.message, file.originalPath, e.location.first_line);
+        return done(e, null);
+    }
+
+    if (result.v3SourceMap) {
+        map = JSON.parse(result.v3SourceMap);
+        map.sources[0] = path.basename(file.originalPath);
+        map.sourcesContent = [content];
+        map.file = path.basename(file.originalPath.replace(/\.coffee$/, &#x27;.js&#x27;));
+        file.sourceMap = map;
+        datauri = &#x27;data:application/json;charset=utf-8;base64,&#x27; + new Buffer(JSON.stringify(map)).toString(&#x27;base64&#x27;)
+        done(null, result.js + &#x27;\n//@ sourceMappingURL=&#x27; + datauri + &#x27;\n&#x27;);
+    } else {
+        done(null, result.js || result)
+    }
+};
 
 /**
  * Load and execute a coffeescript file.
@@ -112,16 +148,19 @@ var fs = require(&#x27;fs&#x27;),
  * @param {String} target Path to coffeescript file to load.
  */
 module.exports = function (target) {
-  var file = {originalPath: target},
-      code = fs.readFileSync(target).toString();
+    var file = {originalPath: target},
+        code = fs.readFileSync(target).toString();
 
-  karmaCoffeePreprocessor(code, file, function (err, result) {
-    if (!err) {
-      vm.runInThisContext(result);
-    } else {
-      console.log(err);
-    }
-  });
+    coffeePreprocessor({
+        bare: true,
+        sourceMap: false
+    }, code, file, function (err, result) {
+        if (!err) {
+            vm.runInThisContext(result);
+        } else {
+            console.log(err);
+        }
+    });
 };
 
     </pre>

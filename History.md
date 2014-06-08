@@ -1,3 +1,8 @@
+## v0.1.7
+
+Ensure postLog call has a non-empty message field
+
+
 ## v0.1.6
 
 Extract meteor core stubs into separate npm package

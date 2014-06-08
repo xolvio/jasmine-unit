@@ -60,7 +60,7 @@
 
   var regurgitate = Meteor.bindEnvironment(function (data) {
     consoleData += data;
-    if (consoleData.indexOf('\n') !== -1) {
+    if (consoleData.indexOf('\n') !== -1 && consoleData.trim()) {
       console.log(consoleData.trim());
       Meteor.call('postLog', {
         type: 'out',

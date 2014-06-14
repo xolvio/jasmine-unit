@@ -113,10 +113,51 @@
   function rerunTests () {
     Meteor.call('resetLogs', {framework: 'jasmine-unit'});
     rimraf.sync(testReportsPath);
+
+    stubPackages()
+
     var jasmineNode = spawn(process.execPath, args);
     jasmineNode.stdout.on('data', regurgitate);
     jasmineNode.stderr.on('data', regurgitate);
     jasmineNode.on('close', closeFunc);
+  }
+
+  function stubPackages () {
+    var stubs = {},
+        packageJsMatcher,
+        packageJsFiles,
+        out = "",
+        outfile;
+
+    outfile = path.join(pwd, 'tests', 'a1-package-stub.js')
+
+    // identify exported packages
+    packageJsMatcher = "packages/**/package.js"
+    packageJsFiles = glob.sync(packageJsMatcher, {cwd: pwd})
+
+    _.each(packageJsFiles, function (filePath, index) {
+      var file,
+          match,
+          matcher
+
+      console.log(path.join(pwd, filePath))
+      file = fs.readFileSync(path.join(pwd, filePath))
+      matcher = /api\.export\w*/i
+      if (matcher.test(file)) {
+        console.log('found export')
+      }
+    })
+
+
+    // build stubs
+    stubs.moment = function () { return { format: function () {} } }
+
+    // prep for file write - convert stubs to string
+    for (var name in stubs) {
+      out += name + " = " + stubs[name].toString() + ";";
+    }
+
+    fs.writeFileSync(outfile, out)
   }
 
 })();

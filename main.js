@@ -46,7 +46,6 @@
 
 
 
-
 //////////////////////////////////////////////////////////////////////
 // private functions
 //
@@ -126,6 +125,7 @@
     var stubs = {},
         packageJsMatcher,
         packageJsFiles,
+        packageExports = [],
         out = "",
         outfile;
 
@@ -140,17 +140,26 @@
           match,
           matcher
 
-      console.log(path.join(pwd, filePath))
       file = fs.readFileSync(path.join(pwd, filePath))
+      // api.export('Roles')
+      // api.export('moment')
+      // Adrian
       matcher = /api\.export\w*/i
       if (matcher.test(file)) {
-        console.log('found export')
+        console.log('found export', path.join(pwd, filePath))
       }
+
+      // Adrian populates the packageExports array
+      packageExports.push('moment')
     })
 
 
     // build stubs
-    stubs.moment = function () { return { format: function () {} } }
+    // Robert
+    _.each(packageExports, function (name) {
+      // mock global[name] object and stick it on the stubs object as stubs[name]
+      makeMock(name, global[name], stubs)
+    })
 
     // prep for file write - convert stubs to string
     for (var name in stubs) {
@@ -160,4 +169,13 @@
     fs.writeFileSync(outfile, out)
   }
 
+  function makeMock (name, targetObj, dest) {
+    if (name == 'moment') {
+      dest[name] = function () { return { format: function () {} } }
+    }
+  }
+
+
 })();
+
+

@@ -165,9 +165,6 @@
         return
       }
 
-      // api.export('Roles')
-      // api.export('moment')
-
       try {
         file = fs.readFileSync(path.join(pwd, "packages", filePath), 'utf8')
         while(found = exportsRE.exec(file)) {
@@ -177,8 +174,6 @@
       } catch (ex) {
         DEBUG && console.log('error reading file', filePath, ex)
       }
-
-      // populate the packageExports array
     })
 
     return packageExports
@@ -206,22 +201,23 @@
 
 
     // build stubs
-    // Robert
     _.each(packageExports, function (name) {
       DEBUG && console.log('mocking', name)
       // mock global[name] object and stick it on the stubs object as stubs[name]
-      makeMock(name, stubs)
+      makeStub(name, stubs)
     })
 
-    // prep for file write - convert stubs to string
+    // prep for file write
     for (var name in stubs) {
-      out += name + " = " + stubs[name].toString() + ";";
+      out += name + " = " + stubs[name] + ";\n\n";
     }
 
     fs.writeFileSync(outfile, out)
   }  // end stubPackages
 
   function stubObject (target, dest) {
+    var emptyFn = function emptyFn () {}
+
     for (var field in target) {
       var type = typeof target[field]
       switch (type) {
@@ -232,7 +228,7 @@
           dest[field] = target[field]
           break;
         case "function":
-          dest[field] = emptyFn;
+          dest[field] = "EMPTY_FUNCTION";
           break;
         case "object":
           if (target[field] === null) {
@@ -240,6 +236,7 @@
           } else if (target[field] instanceof Date) {
             dest[field] = new Date(target[field])
           } else {
+            dest[field] = {}
             stubObject(target[field], dest[field])
           }
           break;
@@ -252,17 +249,44 @@
       return packagePath.indexOf(packageName) == 0
     })
   }
-  function makeMock (name, dest) {
+
+  /**
+   * Neither JSON.stringify() nor .toString() work for 
+   * functions so "stub" functions by replacing them with
+   * string constant EMPTY_FUNCTION and then converting to 
+   * empty function code in string form.
+   *
+   * Since stub is written to a javascript file, functions 
+   * will be properly stubbed as empty functions when the 
+   * stub file is loaded.
+   *
+   * @method convertEmptyFn
+   * @param {String} str String to convert
+   * @return {String} string with all EMPTY_FUNCTION strings
+   *                        converted to empty function 
+   *                        javascript function declarations
+   *                        in string form
+   */
+  function convertEmptyFn (str) {
+    return str.replace(/"EMPTY_FUNCTION"/g,"function emptyFn () {}")
+  }
+
+  function makeStub (name, dest) {
     var self = this,
         target = global[name],
-        isFunction = false;
+        tmpDest = {};
 
     if (typeof target == 'function') {
-      isFunction = true;
+      // ex. moment().format('MMM dd, YYYY')
       target = target();
+      stubObject(target, tmpDest)
+      dest[name] = "function () { return " + 
+                   convertEmptyFn(JSON.stringify(tmpDest, null, 2)) + "; }"
+    } else {
+      // ex. Roles.addUsersToRoles()
+      stubObject(target, tmpDest)
+      dest[name] = convertEmptyFn(JSON.stringify(tmpDest, null, 2))
     }
-
-    stubObject(target, dest)
 
 
 /*
@@ -285,24 +309,9 @@
     }
     console.log(tmp)
     //fs.writeFileSync(path.join(pwd, "test.log"), JSON.stringify(tmp))
-
 */
 
-
-/*
-    if (name === 'moment') {
-      if (isFunction) {
-        dest[name] = "function () { return " + mock.toString() + " }"
-      } else {
-        dest[name] = mock
-      }
-      //dest[name] = function () { return { format: function () {} } }
-      // boundMock = function (args) { return (function () {return mock}).apply(self, args)}
-      // dest[name] = _.bind(mock, self);
-    }
-*/
-
-  }  // end makeMock
+  }  // end makeStub
 
 
 })();

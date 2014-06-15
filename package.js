@@ -15,4 +15,5 @@ Npm.depends({
 Package.on_use(function (api) {
     api.use('velocity');
     api.add_files('main.js', 'server');
+    api.add_files('lib/module-mocker.js', 'server');
 });

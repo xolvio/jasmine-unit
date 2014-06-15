@@ -210,7 +210,7 @@
     _.each(packageExports, function (name) {
       DEBUG && console.log('mocking', name)
       // mock global[name] object and stick it on the stubs object as stubs[name]
-      makeMock(name, global[name], stubs)
+      makeMock(name, stubs)
     })
 
     // prep for file write - convert stubs to string
@@ -221,10 +221,29 @@
     fs.writeFileSync(outfile, out)
   }  // end stubPackages
 
-
-  function makeMock (name, targetObj, dest) {
-    if (name == 'moment') {
-      dest[name] = function () { return { format: function () {} } }
+  function stubObject (target, dest) {
+    for (var field in target) {
+      var type = typeof target[field]
+      switch (type) {
+        case "number":
+          dest[field] = target[field]
+          break;
+        case "string":
+          dest[field] = target[field]
+          break;
+        case "function":
+          dest[field] = emptyFn;
+          break;
+        case "object":
+          if (target[field] === null) {
+            dest[field] = null
+          } else if (target[field] instanceof Date) {
+            dest[field] = new Date(target[field])
+          } else {
+            stubObject(target[field], dest[field])
+          }
+          break;
+      }
     }
   }
 
@@ -233,6 +252,58 @@
       return packagePath.indexOf(packageName) == 0
     })
   }
+  function makeMock (name, dest) {
+    var self = this,
+        target = global[name],
+        isFunction = false;
+
+    if (typeof target == 'function') {
+      isFunction = true;
+      target = target();
+    }
+
+    stubObject(target, dest)
+
+
+/*
+    var metadata = moduleMocker.getMetadata(target);
+    // console.log("\n\n\n############ Test string (moment):\n\n", moment().format('MMMM Do YYYY, h:mm:ss a'));
+    // console.log("\n\n\n############ moment.format:\n\n", global['moment']().format );
+    // console.log("\n\n\n############ Metadata:\n\n", metadata );
+    var mock = moduleMocker.generateFromMetadata(metadata);
+    console.log("\n\n\n############ Test string (mock):\n\n", mock.format('MMMM Do YYYY, h:mm:ss a'));
+    console.log("\n called with", mock.format.mock.calls)
+    //console.log("\n\n\n############ Mock:\n\n", mock );
+    //fs.writeFileSync(path.join(pwd, "test.log"), JSON.stringify(mock.format.mock))
+
+    var tmp = {};
+
+    for (var field in mock) {
+      if (field != 'toString') {
+        tmp[field] = mock[field]
+      }
+    }
+    console.log(tmp)
+    //fs.writeFileSync(path.join(pwd, "test.log"), JSON.stringify(tmp))
+
+*/
+
+
+/*
+    if (name === 'moment') {
+      if (isFunction) {
+        dest[name] = "function () { return " + mock.toString() + " }"
+      } else {
+        dest[name] = mock
+      }
+      //dest[name] = function () { return { format: function () {} } }
+      // boundMock = function (args) { return (function () {return mock}).apply(self, args)}
+      // dest[name] = _.bind(mock, self);
+    }
+*/
+
+  }  // end makeMock
+
 
 })();
 

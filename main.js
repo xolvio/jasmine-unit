@@ -5,6 +5,7 @@
 
   var ANNOUNCE_STRING = 'Velocity Jasmine-Unit is loaded',
       pwd = process.env.PWD,
+      DEBUG = process.env.JASMINE_DEBUG,
       spawn = Npm.require('child_process').spawn,
       parseString = Npm.require('xml2js').parseString,
       glob = Npm.require('glob'),
@@ -121,42 +122,93 @@
     jasmineNode.on('close', closeFunc);
   }
 
+  function getTestPackageNames (pwd, path, glob) {
+    var smartJsonFiles,
+        names = []
+        
+    smartJsonFiles = glob.sync(path.join("**","smart.json"), 
+                               {cwd: path.join(pwd, "packages")})
+
+    _.each(smartJsonFiles, function (filePath) {
+      var smartJson,
+          fullPath = path.join(pwd, "packages", filePath);
+
+      try {
+        smartJson = JSON.parse(fs.readFileSync(fullPath, 'utf8'))
+        if (smartJson && smartJson.testPackage) {
+          names.push(path.dirname(filePath))
+        }
+      } 
+      catch (ex) {
+        DEBUG && console.log(filePath, ex)
+      }
+    })
+
+    return names
+  }  // end getTestPackageNames 
+
+
+  function getPackageExports (pwd, path, glob, packagesToIgnore) {
+    var packageJsFiles,
+        packageExports = [],
+        exportsRE = /api\.export\s*\(\s*(['"])(.*?)\1/igm;
+        
+    packageJsFiles = glob.sync(path.join("**", "package.js"), 
+                               {cwd: path.join(pwd, "packages")})
+
+    _.each(packageJsFiles, function (filePath) {
+      var file,
+          found;
+
+      if (shouldIgnorePackage(packagesToIgnore, filePath)) {
+        DEBUG && console.log('ignoring', path.dirname(filePath))
+        return
+      }
+
+      // api.export('Roles')
+      // api.export('moment')
+
+      try {
+        file = fs.readFileSync(path.join(pwd, "packages", filePath), 'utf8')
+        while(found = exportsRE.exec(file)) {
+          DEBUG && console.log('found export', filePath, found[2])
+          packageExports.push(found[2])
+        }
+      } catch (ex) {
+        DEBUG && console.log('error reading file', filePath, ex)
+      }
+
+      // populate the packageExports array
+    })
+
+    return packageExports
+  }  // end getPackageExports
+
+
   function stubPackages () {
     var stubs = {},
-        packageJsMatcher,
         packageJsFiles,
         packageExports = [],
+        packagesToIgnore,
+        smartJsonFiles,
+        ignoreString,
+        ignoreRegex,
         out = "",
         outfile;
 
     outfile = path.join(pwd, 'tests', 'a1-package-stub.js')
 
-    // identify exported packages
-    packageJsMatcher = "packages/**/package.js"
-    packageJsFiles = glob.sync(packageJsMatcher, {cwd: pwd})
-
-    _.each(packageJsFiles, function (filePath, index) {
-      var file,
-          match,
-          matcher
-
-      file = fs.readFileSync(path.join(pwd, filePath))
-      // api.export('Roles')
-      // api.export('moment')
-      // Adrian
-      matcher = /api\.export\w*/i
-      if (matcher.test(file)) {
-        console.log('found export', path.join(pwd, filePath))
-      }
-
-      // Adrian populates the packageExports array
-      packageExports.push('moment')
-    })
+    // identify packages to ignore (ie. test packages)
+    packagesToIgnore = getTestPackageNames(pwd, path, glob)
+    packagesToIgnore.push('velocity')
+    
+    packageExports = getPackageExports(pwd, path, glob, packagesToIgnore)
 
 
     // build stubs
     // Robert
     _.each(packageExports, function (name) {
+      DEBUG && console.log('mocking', name)
       // mock global[name] object and stick it on the stubs object as stubs[name]
       makeMock(name, global[name], stubs)
     })
@@ -167,7 +219,8 @@
     }
 
     fs.writeFileSync(outfile, out)
-  }
+  }  // end stubPackages
+
 
   function makeMock (name, targetObj, dest) {
     if (name == 'moment') {
@@ -175,6 +228,11 @@
     }
   }
 
+  function shouldIgnorePackage (packagesToIgnore, packagePath) {
+    return _.some(packagesToIgnore, function (packageName) {
+      return packagePath.indexOf(packageName) == 0
+    })
+  }
 
 })();
 

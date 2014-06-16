@@ -3,6 +3,10 @@
 
   "use strict";
 
+  if (Mirror.isMirror){
+    return;
+  }
+
   var ANNOUNCE_STRING = 'Velocity Jasmine-Unit is loaded',
       pwd = process.env.PWD,
       spawn = Npm.require('child_process').spawn,

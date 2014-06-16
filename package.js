@@ -13,6 +13,6 @@ Npm.depends({
 });
 
 Package.on_use(function (api) {
-    api.use('velocity');
+    api.use(['velocity', 'mirror']);
     api.add_files('main.js', 'server');
 });

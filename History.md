@@ -1,13 +1,19 @@
+## v0.1.8
+
+* Auto-stub packages
+* Make compatible with Mirror
+
+
 ## v0.1.7
 
-Ensure postLog call has a non-empty message field
+* Ensure postLog call has a non-empty message field
 
 
 ## v0.1.6
 
-Extract meteor core stubs into separate npm package
+* Extract meteor core stubs into separate npm package
 
 
 ## v0.1.5
 
-Murky ancient history...
+* Murky ancient history...

@@ -114,7 +114,6 @@
     rimraf.sync(testReportsPath);
 
     PackageStubber.stubPackages({
-      dontStub: ['moment'],
       outfile: path.join('tests', 'a1-package-stub.js')
     })
 

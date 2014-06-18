@@ -3,7 +3,8 @@
 
   "use strict";
 
-  if (Mirror.isMirror){
+  if ('undefined' !== typeof Mirror && Mirror.isMirror) {
+    // only run jasmine unit tests once, not for each mirror
     return;
   }
 

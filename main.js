@@ -3,6 +3,11 @@
 
   "use strict";
 
+  if ('undefined' !== typeof Mirror && Mirror.isMirror) {
+    // only run jasmine unit tests once, not for each mirror
+    return;
+  }
+
   var ANNOUNCE_STRING = 'Velocity Jasmine-Unit is loaded',
       pwd = process.env.PWD,
       spawn = Npm.require('child_process').spawn,

@@ -6,5 +6,8 @@
     "version": "0.1.7",
     "git": "https://github.com/xolvio/jasmine-unit.git",
     "testPackage": true,
-    "regex": "-jasmine-unit.(js|coffee)$"
+    "regex": "-jasmine-unit.(js|coffee)$",
+    "packages": {
+      "package-stubber": "0.0.1"
+    }
 }

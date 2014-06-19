@@ -1,3 +1,8 @@
+## v0.1.9
+
+* Update to latest version of meteor-package-stubber
+
+
 ## v0.1.8
 
 * Auto-stub packages

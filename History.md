@@ -1,11 +1,16 @@
+## v0.1.11
+
+* Update to package-stubber v0.0.5
+
+
 ## v0.1.10
 
-* Update to latest version of meteor-package-stubber, again
+* Update to package-stubber v0.0.3
 
 
 ## v0.1.9
 
-* Update to latest version of meteor-package-stubber
+* Update to package-stubber v0.0.2
 
 
 ## v0.1.8

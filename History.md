@@ -1,3 +1,8 @@
+## v0.1.12
+
+* Include sample tests
+
+
 ## v0.1.11
 
 * Update to package-stubber v0.0.5

@@ -6,7 +6,7 @@
   // Example test class
   //
 
-  function () GeometryComputationClass {}
+  function GeometryComputationClass () {}
 
   GeometryComputationClass.prototype = {
     constructor: GeometryComputationClass,

@@ -3,11 +3,13 @@
     "description": "Velocity-compatible unit test package with jasmine syntax",
     "homepage": "https://github.com/xolvio/jasmine-unit",
     "author": "Sam Hatoum",
-    "version": "0.1.12",
+    "version": "0.1.13",
     "git": "https://github.com/xolvio/jasmine-unit.git",
     "testPackage": true,
     "regex": "-jasmine-unit.(js|coffee)$",
     "packages": {
-      "package-stubber": "0.0.5"
+      "package-stubber": "0.0.5",
+      "velocity": "0.1.7",
+      "mirror": "0.0.2"
     }
 }

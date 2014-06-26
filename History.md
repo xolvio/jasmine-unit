@@ -1,3 +1,8 @@
+## v0.1.13
+
+* Add velocity and mirror dependencies in smart.json
+
+
 ## v0.1.12
 
 * Include sample tests

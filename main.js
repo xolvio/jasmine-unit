@@ -118,9 +118,7 @@
     Meteor.call('resetLogs', {framework: 'jasmine-unit'});
     rimraf.sync(testReportsPath);
 
-    PackageStubber.stubPackages({
-      outfile: path.join('tests', 'a1-package-stub.js')
-    })
+    PackageStubber.stubPackages()
 
     var jasmineNode = spawn(process.execPath, args);
     jasmineNode.stdout.on('data', regurgitate);

@@ -2,7 +2,7 @@
     "project": {
         "name": "Velocity Jasmine-Unit",
         "description": "Velocity-compatible unit test package with jasmine syntax",
-        "version": "v0.1.13"
+        "version": "v0.1.15"
     },
     "files": {
         "lib/coffee-require.js": {
@@ -232,7 +232,7 @@
         },
         {
             "file": "lib/stub-loader.js",
-            "line": 28,
+            "line": 25,
             "description": "Load user-defined stubs.  Stub files should be located in the 'tests' \ndirectory and end in -stub.js\n\nExample:\n  tests/custom-stub.js",
             "itemtype": "method",
             "name": "loadUserStubs",
@@ -241,7 +241,7 @@
         },
         {
             "file": "lib/stub-loader.js",
-            "line": 41,
+            "line": 38,
             "description": "Create stubs for each template defined in the Meteor app.",
             "itemtype": "method",
             "name": "stubTemplates",

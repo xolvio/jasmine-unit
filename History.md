@@ -1,3 +1,15 @@
+## v0.1.15
+
+* Update to velocity v0.1.9
+* Move remaining stubs to package-stubber
+* Update to package-stubber v0.0.7
+
+
+## v0.1.14
+
+?
+
+
 ## v0.1.13
 
 * Add velocity and mirror dependencies in smart.json

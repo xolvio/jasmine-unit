@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v0.1.13</em>
+            <em>API Docs for: v0.1.15</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -109,10 +109,7 @@ module.exports = {
    * @method loadFrameworkStubs 
    */
   loadFrameworkStubs: function () {
-    var dir = path.join(&#x27;packages&#x27;, &#x27;jasmine-unit&#x27;, &#x27;stubs&#x27;);
-
     require(PWD + &#x27;/packages/jasmine-unit/.npm/package/node_modules/meteor-stubs&#x27;);
-    _loadStubs(dir);
   },
 
   /**
@@ -151,6 +148,12 @@ function _loadStubs (dir) {
       files, i;
 
   files = glob.sync(&#x27;**/*-stub.js&#x27;, { cwd: cwd });
+  for (i in files) {
+    DEBUG &amp;&amp; console.log(&#x27;loading stub file:&#x27;, files[i]);
+    require(path.join(PWD, dir, files[i]));
+  }
+
+  files = glob.sync(&#x27;**/*-stubs.js&#x27;, { cwd: cwd });
   for (i in files) {
     DEBUG &amp;&amp; console.log(&#x27;loading stub file:&#x27;, files[i]);
     require(path.join(PWD, dir, files[i]));

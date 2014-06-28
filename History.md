@@ -7,7 +7,7 @@
 
 ## v0.1.14
 
-?
+* Removed mirror dependency
 
 
 ## v0.1.13

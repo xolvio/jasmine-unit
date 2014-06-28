@@ -1,3 +1,9 @@
+## v0.1.16
+
+* Stop pinning dependencies to specific versions
+* Remove extraneous reference to mirror package
+
+
 ## v0.1.15
 
 * Update to velocity v0.1.9

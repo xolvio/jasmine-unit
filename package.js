@@ -13,7 +13,7 @@ Npm.depends({
 });
 
 Package.on_use(function (api) {
-    api.use(['velocity', 'mirror']);
+    api.use(['velocity']);
     api.use('package-stubber');
     api.add_files('main.js', 'server');
 });

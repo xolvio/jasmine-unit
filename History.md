@@ -1,3 +1,10 @@
+## v0.1.17
+
+* Use jasmine-node-reporter-fix npm package which contains a patch for the 
+  jasmine-reporter bug which caused reports to not be written (and therefore
+  not displayed by velocity-html-reporter)
+  
+
 ## v0.1.16
 
 * Stop pinning dependencies to specific versions

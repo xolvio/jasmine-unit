@@ -12,15 +12,18 @@
       path = Npm.require('path'),
       _ = Npm.require('lodash'),
       rimraf = Npm.require('rimraf'),
-      testReportsPath = path.join(pwd, 'tests', '.reports', 'jasmine-unit'),
+      testReportsPath = _p(pwd + '/tests/.reports/jasmine-unit'),
       args = [],
       consoleData = '',
       jasmineCli,
       closeFunc;
 
+function _p (unixPath) {
+  return unixPath.replace('\/', path.sep);
+}
 
 // build OS-independent path to jasmine cli
-  jasmineCli = pwd + ',packages,jasmine-unit,.npm,package,node_modules,jasmine-node,lib,jasmine-node,cli.js'.split(',').join(path.sep);
+  jasmineCli = _p(pwd + '/packages/jasmine-unit/.npm/package/node_modules/jasmine-node-reporter-fix/lib/jasmine-node/cli.js');
 
   args.push(jasmineCli);
   args.push('--coffee');
@@ -32,8 +35,8 @@
   args.push('--junitreport');
   args.push('--output');
   args.push(testReportsPath);
-  args.push(path.join(pwd, 'packages', 'jasmine-unit', 'lib'));
-  args.push(path.join(pwd, 'tests'));
+  args.push(_p(pwd + '/packages/jasmine-unit/lib'));
+  args.push(_p(pwd + '/tests'));
 
 // How can we abstract this server-side so the test frameworks don't need to know about velocity collections
   VelocityTestFiles.find({targetFramework: 'jasmine-unit'}).observe({
@@ -72,7 +75,7 @@
 
   closeFunc = Meteor.bindEnvironment(function () {
     var newResults = [],
-        globSearchString = path.join('**', 'TEST-*.xml'),
+        globSearchString = _p('**/TEST-*.xml'),
         xmlFiles = glob.sync(globSearchString, { cwd: testReportsPath });
 
     _.each(xmlFiles, function (xmlFile, index) {
@@ -114,6 +117,8 @@
     rimraf.sync(testReportsPath);
 
     PackageStubber.stubPackages()
+
+    DEBUG && console.log('jasmine cli: ', process.execPath, args.join(' '));
 
     var jasmineNode = spawn(process.execPath, args);
     jasmineNode.stdout.on('data', regurgitate);

@@ -65,6 +65,12 @@ A [velocity](https://github.com/xolvio/velocity/)-compatible test framework whic
    $ DEBUG=1 JASMINE_DEBUG=1 VELOCITY_DEBUG=1 mrt
    ```
 
+10. View app in browser
+
+    ```bash
+    $ open http://localhost:3000/
+    ```
+    
 
 ## Stubs
 

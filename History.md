@@ -1,3 +1,8 @@
+## v0.1.19
+
+* Move sample tests to 'sample-tests' directory
+
+
 ## v0.1.18
 
 * Use jasmine-node-reporter-fix 0.0.2 which fixes jasmine-node issue #63,

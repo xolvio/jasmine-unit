@@ -1,7 +1,7 @@
 {
   "name": "Velocity Jasmine-Unit",
   "description": "Velocity-compatible unit test package with jasmine syntax",
-  "version": "v0.1.18",
+  "version": "v0.1.19",
   "options": {
     "outdir": "./docs",
     "exclude": ".meteor,.git,.npm,.build,tests",

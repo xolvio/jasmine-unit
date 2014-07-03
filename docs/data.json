@@ -2,7 +2,7 @@
     "project": {
         "name": "Velocity Jasmine-Unit",
         "description": "Velocity-compatible unit test package with jasmine syntax",
-        "version": "v0.1.17"
+        "version": "v0.1.18"
     },
     "files": {
         "lib/coffee-require.js": {

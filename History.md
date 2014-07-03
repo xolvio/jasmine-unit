@@ -1,3 +1,9 @@
+## v0.1.18
+
+* Use jasmine-node-reporter-fix 0.0.2 which fixes jasmine-node issue #63,
+  TeamCityReporter error
+
+
 ## v0.1.17
 
 * Use jasmine-node-reporter-fix npm package which contains a patch for the 

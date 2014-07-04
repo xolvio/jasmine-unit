@@ -2,7 +2,7 @@
     "project": {
         "name": "Velocity Jasmine-Unit",
         "description": "Velocity-compatible unit test package with jasmine syntax",
-        "version": "v0.1.19"
+        "version": "v0.1.20"
     },
     "files": {
         "lib/coffee-require.js": {
@@ -224,7 +224,7 @@
         {
             "file": "lib/stub-loader.js",
             "line": 12,
-            "description": "Load framework-supplied stubs.  Stub files are located in the \n'packages/jasmine-unit/stubs' directory and end in -stub.js\n\nExample:\n  packages/jasmine-unit/stubs/router-stub.js",
+            "description": "Load framework-supplied stubs.",
             "itemtype": "method",
             "name": "loadFrameworkStubs",
             "class": "",
@@ -232,8 +232,8 @@
         },
         {
             "file": "lib/stub-loader.js",
-            "line": 25,
-            "description": "Load user-defined stubs.  Stub files should be located in the 'tests' \ndirectory and end in -stub.js\n\nExample:\n  tests/custom-stub.js",
+            "line": 22,
+            "description": "Load user-defined stubs.  Stub files should be located in the 'tests' \ndirectory and end in `-stub.js` or `-stubs.js`.\n\nExample:\n  tests/custom-stub.js\n  tests/custom-stubs.js",
             "itemtype": "method",
             "name": "loadUserStubs",
             "class": "",
@@ -241,7 +241,7 @@
         },
         {
             "file": "lib/stub-loader.js",
-            "line": 38,
+            "line": 36,
             "description": "Create stubs for each template defined in the Meteor app.",
             "itemtype": "method",
             "name": "stubTemplates",

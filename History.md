@@ -1,3 +1,8 @@
+## v0.1.20
+
+* Update meteor-stubs npm dependency
+
+
 ## v0.1.19
 
 * Move sample tests to 'sample-tests' directory

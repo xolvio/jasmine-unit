@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v0.1.19</em>
+            <em>API Docs for: v0.1.20</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -115,13 +115,26 @@
 var stubLoader = require(&#x27;./stub-loader.js&#x27;),
     fileLoader = require(&#x27;./file-loader.js&#x27;);
 
-// load any stubs; auto-stub any templates found in Meteor app
-stubLoader.loadFrameworkStubs();
-stubLoader.stubTemplates();
-stubLoader.loadUserStubs();
+// load stubs; auto-stub any templates found in Meteor app
+
+try {
+  stubLoader.loadFrameworkStubs();
+  stubLoader.stubTemplates();
+  stubLoader.loadUserStubs();
+}
+catch (ex) {
+  console.log(&#x27;Error loading stubs&#x27;, ex.message, ex.stack);
+}
+
 
 // load Meteor app source files prior to running tests
-fileLoader.loadFiles();
+
+try {
+  fileLoader.loadFiles();
+}
+catch (ex) {
+  console.log(&#x27;Error loading app files&#x27;, ex.message, ex.stack);
+}
 
     </pre>
 </div>

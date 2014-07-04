@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v0.1.19</em>
+            <em>API Docs for: v0.1.20</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -100,24 +100,22 @@ var PWD = process.env.PWD,
 module.exports = {
 
   /**
-   * Load framework-supplied stubs.  Stub files are located in the 
-   * &#x27;packages/jasmine-unit/stubs&#x27; directory and end in -stub.js
-   *
-   * Example:
-   *   packages/jasmine-unit/stubs/router-stub.js
+   * Load framework-supplied stubs.
    *
    * @method loadFrameworkStubs 
    */
   loadFrameworkStubs: function () {
     require(PWD + &#x27;/packages/jasmine-unit/.npm/package/node_modules/meteor-stubs&#x27;);
+    MeteorStubs.install();
   },
 
   /**
    * Load user-defined stubs.  Stub files should be located in the &#x27;tests&#x27; 
-   * directory and end in -stub.js
+   * directory and end in &#x60;-stub.js&#x60; or &#x60;-stubs.js&#x60;.
    *
    * Example:
    *   tests/custom-stub.js
+   *   tests/custom-stubs.js
    *
    * @method loadUserStubs
    */

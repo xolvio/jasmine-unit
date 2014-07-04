@@ -9,7 +9,7 @@ Npm.depends({
     'xml2js': '0.4.2',
     'jasmine-node-reporter-fix': '0.0.2',
     'coffee-script': '1.7.1',
-    'meteor-stubs': '0.0.1'
+    'meteor-stubs': '0.0.2'
 });
 
 Package.on_use(function (api) {

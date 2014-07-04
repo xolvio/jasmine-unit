@@ -1,4 +1,5 @@
-;(function () {
+;
+(function () {
 
   "use strict";
 
@@ -14,13 +15,12 @@
       rimraf = Npm.require('rimraf'),
       testReportsPath = _p(pwd + '/tests/.reports/jasmine-unit'),
       args = [],
-      consoleData = '',
       jasmineCli,
       closeFunc;
 
-function _p (unixPath) {
-  return unixPath.replace('\/', path.sep);
-}
+  function _p (unixPath) {
+    return unixPath.replace('\/', path.sep);
+  }
 
 // build OS-independent path to jasmine cli
   jasmineCli = _p(pwd + '/packages/jasmine-unit/.npm/package/node_modules/jasmine-node-reporter-fix/lib/jasmine-node/cli.js');
@@ -59,19 +59,6 @@ function _p (unixPath) {
       return a & a;
     }, 0);
   }
-
-  var regurgitate = Meteor.bindEnvironment(function (data) {
-    consoleData += data;
-    if (consoleData.indexOf('\n') !== -1 && consoleData.trim()) {
-      console.log(consoleData.trim());
-      Meteor.call('postLog', {
-        type: 'out',
-        framework: 'jasmine-unit',
-        message: consoleData.trim()
-      });
-      consoleData = '';
-    }
-  });
 
   closeFunc = Meteor.bindEnvironment(function () {
     var newResults = [],
@@ -116,13 +103,13 @@ function _p (unixPath) {
     Meteor.call('resetLogs', {framework: 'jasmine-unit'});
     rimraf.sync(testReportsPath);
 
-    PackageStubber.stubPackages()
+    PackageStubber.stubPackages();
 
     DEBUG && console.log('jasmine cli: ', process.execPath, args.join(' '));
 
     var jasmineNode = spawn(process.execPath, args);
-    jasmineNode.stdout.on('data', regurgitate);
-    jasmineNode.stderr.on('data', regurgitate);
+    jasmineNode.stdout.pipe(process.stdout);
+    jasmineNode.stderr.pipe(process.stderr);
     jasmineNode.on('close', closeFunc);
   }
 

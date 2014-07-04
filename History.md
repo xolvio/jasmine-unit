@@ -1,5 +1,6 @@
 ## v0.1.20
 
+* Pipe jasmine stdout/stderr to main process
 * Update meteor-stubs npm dependency
 
 

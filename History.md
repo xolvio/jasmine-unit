@@ -1,3 +1,7 @@
+## v0.1.21
+
+* Fix: Files are not loaded in the correct Meteor load order
+
 ## v0.1.20
 
 * Pipe jasmine stdout/stderr to main process

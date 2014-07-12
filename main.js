@@ -11,12 +11,13 @@
       glob = Npm.require('glob'),
       fs = Npm.require('fs'),
       path = Npm.require('path'),
-      _ = Npm.require('lodash'),
       rimraf = Npm.require('rimraf'),
       testReportsPath = _p(pwd + '/tests/.reports/jasmine-unit'),
       args = [],
       jasmineCli,
-      closeFunc;
+      closeFunc,
+      rerunTests,
+      RUNTEST_THROTTLE_TIME = 100;
 
 
   //////////////////////////////////////////////////////////////////////
@@ -44,26 +45,6 @@
   // private functions
   //
 
-  /**
-   * Lets us write paths unix-style but still be 
-   * cross-platform compatible
-   *
-   * @method _p
-   * @param {String} unixPath path with unix-style separators
-   * @return {String} path with platform-appropriate separator
-   * @private
-   */
-  function _p (unixPath) {
-    return unixPath.replace('\/', path.sep);
-  }
-
-
-  function hashCode (s) {
-    return s.split("").reduce(function (a, b) {
-      a = ((a << 5) - a) + b.charCodeAt(0);
-      return a & a;
-    }, 0);
-  }
 
 
   /**
@@ -119,7 +100,7 @@
    * @method rerunTests
    * @private
    */
-  function rerunTests () {
+  function _rerunTests () {
     Meteor.call('resetLogs', {framework: 'jasmine-unit'});
     rimraf.sync(testReportsPath);
 
@@ -133,6 +114,73 @@
     jasmineNode.on('close', closeFunc);
   }  // end closeFunc
 
+
+  /**
+   * Lets us write paths unix-style but still be 
+   * cross-platform compatible
+   *
+   * @method _p
+   * @param {String} unixPath path with unix-style separators
+   * @return {String} path with platform-appropriate separator
+   * @private
+   */
+  function _p (unixPath) {
+    return unixPath.replace('\/', path.sep);
+  }
+
+
+  function hashCode (s) {
+    return s.split("").reduce(function (a, b) {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+  }
+
+
+  /**
+   * Implementation of underscore's `throttle` function which uses
+   * Meteor.setTimeout instead of the regular one.
+   *
+   * @method _throttle
+   * @private
+   */
+  function _throttle (func, wait, options) {
+    var context, args, result;
+    var timeout = null;
+    var previous = 0;
+    var _now = Date.now || function() { return new Date().getTime(); };
+    options || (options = {});
+    var later = function() {
+      previous = options.leading === false ? 0 : _now();
+      timeout = null;
+      result = func.apply(context, args);
+      context = args = null;
+    };
+    return function() {
+      var now = _now();
+      if (!previous && options.leading === false) previous = now;
+      var remaining = wait - (now - previous);
+      context = this;
+      args = arguments;
+      if (remaining <= 0) {
+        Meteor.clearTimeout(timeout);
+        timeout = null;
+        previous = now;
+        result = func.apply(context, args);
+        context = args = null;
+      } else if (!timeout && options.trailing !== false) {
+        timeout = Meteor.setTimeout(later, remaining);
+      }
+      return result;
+    };
+  }  // end _throttle
+
+
+  // Help prevent unnecessary duplicate test runs by giving velocity core
+  // some time to notify changes before re-running tests.
+  // We don't need the actual file names since jasmine will just execute
+  // all the matching test files each time it's run.
+  rerunTests = _throttle(_rerunTests, RUNTEST_THROTTLE_TIME, {leading: false});
 
 
 //////////////////////////////////////////////////////////////////////

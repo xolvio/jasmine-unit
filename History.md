@@ -1,6 +1,7 @@
 ## vNext
 
 * Fix #23 - closeFunc not defined
+* Fix #22 - throttle test re-runs
 
 
 ## v0.1.21

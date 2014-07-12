@@ -3,7 +3,7 @@
 
   "use strict";
 
-  var ANNOUNCE_STRING = 'Velocity Jasmine-Unit is loaded',
+  var ANNOUNCE_STRING = 'Jasmine-Unit is loaded',
       pwd = process.env.PWD,
       DEBUG = process.env.JASMINE_DEBUG,
       spawn = Npm.require('child_process').spawn,
@@ -18,11 +18,12 @@
       jasmineCli,
       closeFunc;
 
-  function _p (unixPath) {
-    return unixPath.replace('\/', path.sep);
-  }
 
-// build OS-independent path to jasmine cli
+  //////////////////////////////////////////////////////////////////////
+  // set up jasmine cli arguments
+  //
+
+  // OS-independent path to jasmine cli
   jasmineCli = _p(pwd + '/packages/jasmine-unit/.npm/package/node_modules/jasmine-node-reporter-fix/lib/jasmine-node/cli.js');
 
   args.push(jasmineCli);
@@ -38,20 +39,24 @@
   args.push(_p(pwd + '/packages/jasmine-unit/lib'));
   args.push(_p(pwd + '/tests'));
 
-// How can we abstract this server-side so the test frameworks don't need to know about velocity collections
-  VelocityTestFiles.find({targetFramework: 'jasmine-unit'}).observe({
-    added: rerunTests,
-    changed: rerunTests,
-    removed: rerunTests
-  });
 
-  console.log(ANNOUNCE_STRING);
+  //////////////////////////////////////////////////////////////////////
+  // private functions
+  //
 
+  /**
+   * Lets us write paths unix-style but still be 
+   * cross-platform compatible
+   *
+   * @method _p
+   * @param {String} unixPath path with unix-style separators
+   * @return {String} path with platform-appropriate separator
+   * @private
+   */
+  function _p (unixPath) {
+    return unixPath.replace('\/', path.sep);
+  }
 
-
-//////////////////////////////////////////////////////////////////////
-// private functions
-//
 
   function hashCode (s) {
     return s.split("").reduce(function (a, b) {
@@ -60,6 +65,14 @@
     }, 0);
   }
 
+
+  /**
+   * Reports test results back to velocity core.  Called once jasmine child 
+   * process exits
+   *
+   * @method closeFunc
+   * @private
+   */
   closeFunc = Meteor.bindEnvironment(function () {
     var newResults = [],
         globSearchString = _p('**/TEST-*.xml'),
@@ -99,6 +112,13 @@
     });
   });  // end closeFunc
 
+
+  /**
+   * Runs tests and logs results to velocity core.
+   *
+   * @method rerunTests
+   * @private
+   */
   function rerunTests () {
     Meteor.call('resetLogs', {framework: 'jasmine-unit'});
     rimraf.sync(testReportsPath);
@@ -111,7 +131,22 @@
     jasmineNode.stdout.pipe(process.stdout);
     jasmineNode.stderr.pipe(process.stderr);
     jasmineNode.on('close', closeFunc);
-  }
+  }  // end closeFunc
 
+
+
+//////////////////////////////////////////////////////////////////////
+// Register the observe that will kick things off
+//
+
+  // TODO: How can we abstract this server-side so the test frameworks 
+  // don't need to know about velocity collections
+  VelocityTestFiles.find({targetFramework: 'jasmine-unit'}).observe({
+    added: rerunTests,
+    changed: rerunTests,
+    removed: rerunTests
+  });
+
+  console.log(ANNOUNCE_STRING);
 
 })();

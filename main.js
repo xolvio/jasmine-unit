@@ -1,6 +1,5 @@
 /*jshint -W117, -W030, -W044, -W016  */
 /* global
- Velocity:true,
  DEBUG:true
  */
 

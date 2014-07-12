@@ -1,4 +1,9 @@
-;
+/*jshint -W117, -W030, -W044, -W016  */
+/* global
+ Velocity:true,
+ DEBUG:true
+ */
+
 (function () {
 
   "use strict";
@@ -17,7 +22,7 @@
       jasmineCli,
       closeFunc,
       rerunTests,
-      RUNTEST_THROTTLE_TIME = 100;
+      RUN_TEST_THROTTLE_TIME = 100;
 
 
   //////////////////////////////////////////////////////////////////////
@@ -48,7 +53,7 @@
 
 
   /**
-   * Reports test results back to velocity core.  Called once jasmine child 
+   * Reports test results back to velocity core.  Called once jasmine child
    * process exits
    *
    * @method closeFunc
@@ -116,7 +121,7 @@
 
 
   /**
-   * Lets us write paths unix-style but still be 
+   * Lets us write paths unix-style but still be
    * cross-platform compatible
    *
    * @method _p
@@ -148,17 +153,19 @@
     var context, args, result;
     var timeout = null;
     var previous = 0;
-    var _now = Date.now || function() { return new Date().getTime(); };
+    var _now = Date.now || function () { return new Date().getTime(); };
     options || (options = {});
-    var later = function() {
+    var later = function () {
       previous = options.leading === false ? 0 : _now();
       timeout = null;
       result = func.apply(context, args);
       context = args = null;
     };
-    return function() {
+    return function () {
       var now = _now();
-      if (!previous && options.leading === false) previous = now;
+      if (!previous && options.leading === false) {
+        previous = now;
+      }
       var remaining = wait - (now - previous);
       context = this;
       args = arguments;
@@ -180,7 +187,7 @@
   // some time to notify changes before re-running tests.
   // We don't need the actual file names since jasmine will just execute
   // all the matching test files each time it's run.
-  rerunTests = _throttle(_rerunTests, RUNTEST_THROTTLE_TIME, {leading: false});
+  rerunTests = _throttle(_rerunTests, RUN_TEST_THROTTLE_TIME, {leading: false});
 
 
 //////////////////////////////////////////////////////////////////////

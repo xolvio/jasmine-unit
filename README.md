@@ -1,9 +1,33 @@
 # Jasmine-Unit
 
-A [velocity](https://github.com/xolvio/velocity/)-compatible test framework which enables easy testing of [Meteor](https://www.meteor.com/) apps using the [jasmine](http://jasmine.github.io/) syntax.
+A [velocity](https://github.com/xolvio/velocity/)-compatible test framework which enables easy unit testing of [Meteor](https://www.meteor.com/) apps using the [jasmine](http://jasmine.github.io/) syntax.
+
+To use jasmine syntax for integration-style tests which run in the Meteor context, please see the [`jasmine`](https://github.com/Sanjo/meteor-jasmine) test framework.
 
 
-## Usage
+### Quick-start
+
+To get up and running quickly, you may want to use the [`velocity-quick-start`](https://github.com/alanning/meteor-velocity-quick-start) which includes the `velocity-html-reporter` and sample tests for several test frameworks, including `jasmine-unit`.
+
+Here's how to add it to an existing project.  See the repo for more step-by-step instructions.
+
+```sh
+$ cd ~/tmp
+$ meteor create --example leaderboard
+$ cd leaderboard
+$ mrt add velocity-quick-start
+$ meteor
+```
+
+If you would like to see debug output for all the test frameworks, run this command instead:
+
+```sh
+$ DEBUG=1 JASMINE_DEBUG=1 VELOCITY_DEBUG=1 meteor
+```
+
+
+
+### Installation
 
 1. Install [nodejs](http://nodejs.org/)
 2. Install [meteor](https://www.meteor.com/)
@@ -31,7 +55,11 @@ A [velocity](https://github.com/xolvio/velocity/)-compatible test framework whic
     $ mrt add jasmine-unit
     ```
 
-6. Add tests
+
+### Usage
+
+
+1. Add tests
     
     Add tests to a `tests` dir in your app's root.  Test files should follow
     this naming convention: "<test name>-jasmine-unit.js"
@@ -43,9 +71,9 @@ A [velocity](https://github.com/xolvio/velocity/)-compatible test framework whic
     $ cp packages/jasmine-unit/sample-tests/examples-jasmine-unit.js tests
     ```
     
-7. Add stubs, if needed (see below)
+2. Add stubs, if needed (see below)
 
-8. (Optional) Add [velocity-html-reporter](https://github.com/rdickert/velocity-html-reporter/)
+3. (Optional) Add [velocity-html-reporter](https://github.com/rdickert/velocity-html-reporter/)
 
     Test results will be output to the console by default but if you would like to have a nice looking
     display in your application, you can install this optional package.
@@ -54,25 +82,25 @@ A [velocity](https://github.com/xolvio/velocity/)-compatible test framework whic
     $ mrt add velocity-html-reporter
     ```
 
-9. Run app
+4. Run app
 
     ```bash
-    $ mrt
+    $ meteor
     ```
 
    For full debug output:
    ```bash
-   $ DEBUG=1 JASMINE_DEBUG=1 VELOCITY_DEBUG=1 mrt
+   $ DEBUG=1 JASMINE_DEBUG=1 VELOCITY_DEBUG=1 meteor
    ```
 
-10. View app in browser
+5. View app in browser
 
     ```bash
     $ open http://localhost:3000/
     ```
     
 
-## Stubs
+### Stubs
 
 Jasmine-unit runs your unit tests outside the Meteor context.  This means that 
 your test code is fast, isolated, and only testing the things you want them to.  But
@@ -100,7 +128,7 @@ These files will be automatically loaded before your main app code.
 Package-stubber also provides some manually created stubs for common packages so if you do make stubs, consider contributing them back to the [package-stubber project repo](https://github.com/alanning/meteor-package-stubber/tree/master/package-stubber) so that others can use them as well.
 
 
-## Docs
+### Docs
 
 API docs generated using [YUIDoc](http://yui.github.com/yuidoc/).
 

@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v0.1.22</em>
+            <em>API Docs for: v0.1.23</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -88,81 +88,88 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&quot;use strict&quot;;
+/*jshint -W117 */
+/* global
+ */
+
+(function () {
+
+  &quot;use strict&quot;;
 
 // coffeeRequire
-var fs = require(&#x27;fs&#x27;),
-    vm = require(&#x27;vm&#x27;),
-    path = require(&#x27;path&#x27;),
-    PWD = process.env.PWD,
-    NODE_MODULES = path.join(PWD, &#x27;packages&#x27;, &#x27;jasmine-unit&#x27;, &#x27;.npm&#x27;, &#x27;package&#x27;, &#x27;node_modules&#x27;),
-    coffee = require(path.join(NODE_MODULES, &#x27;coffee-script&#x27;)),
-    _ = require(path.join(NODE_MODULES, &#x27;lodash&#x27;));
+  var fs = require(&#x27;fs&#x27;),
+      vm = require(&#x27;vm&#x27;),
+      path = require(&#x27;path&#x27;),
+      PWD = process.env.PWD,
+      NODE_MODULES = path.join(PWD, &#x27;packages&#x27;, &#x27;jasmine-unit&#x27;, &#x27;.npm&#x27;, &#x27;package&#x27;, &#x27;node_modules&#x27;),
+      coffee = require(path.join(NODE_MODULES, &#x27;coffee-script&#x27;)),
+      _ = require(path.join(NODE_MODULES, &#x27;lodash&#x27;));
 
-var merge = function () {
+  var merge = function () {
     var args = Array.prototype.slice.call(arguments, 0);
     args.unshift({});
     return _.merge.apply({}, args);
-};
+  };
 
-/**
- * A coffee processor that can add source maps to compiled files
- *
- * This is a modified version of https://github.com/karma-runner/karma-coffee-preprocessor
- *
- * @method coffeePreprocessor
- * @param {Object} options to pass directly to the coffee-script compiler. See here
- */
-var coffeePreprocessor = function (options, content, file, done) {
+  /**
+   * A coffee processor that can add source maps to compiled files
+   *
+   * This is a modified version of https://github.com/karma-runner/karma-coffee-preprocessor
+   *
+   * @method coffeePreprocessor
+   * @param {Object} options to pass directly to the coffee-script compiler. See here
+   */
+  var coffeePreprocessor = function (options, content, file, done) {
     var result = null;
     var map;
-    var datauri;
+    var dataUri;
 
     // Clone the options because coffee.compile mutates them
-    var opts = _.clone(options)
+    var opts = _.clone(options);
 
     try {
-        result = coffee.compile(content, opts);
+      result = coffee.compile(content, opts);
     } catch (e) {
-        console.log(&#x27;%s\n  at %s:%d&#x27;, e.message, file.originalPath, e.location.first_line);
-        return done(e, null);
+      console.log(&#x27;%s\n  at %s:%d&#x27;, e.message, file.originalPath, e.location.first_line);
+      return done(e, null);
     }
 
     if (result.v3SourceMap) {
-        map = JSON.parse(result.v3SourceMap);
-        map.sources[0] = path.basename(file.originalPath);
-        map.sourcesContent = [content];
-        map.file = path.basename(file.originalPath.replace(/\.coffee$/, &#x27;.js&#x27;));
-        file.sourceMap = map;
-        datauri = &#x27;data:application/json;charset=utf-8;base64,&#x27; + new Buffer(JSON.stringify(map)).toString(&#x27;base64&#x27;)
-        done(null, result.js + &#x27;\n//@ sourceMappingURL=&#x27; + datauri + &#x27;\n&#x27;);
+      map = JSON.parse(result.v3SourceMap);
+      map.sources[0] = path.basename(file.originalPath);
+      map.sourcesContent = [content];
+      map.file = path.basename(file.originalPath.replace(/\.coffee$/, &#x27;.js&#x27;));
+      file.sourceMap = map;
+      dataUri = &#x27;data:application/json;charset=utf-8;base64,&#x27; + new Buffer(JSON.stringify(map)).toString(&#x27;base64&#x27;);
+      done(null, result.js + &#x27;\n//@ sourceMappingURL=&#x27; + dataUri + &#x27;\n&#x27;);
     } else {
-        done(null, result.js || result)
+      done(null, result.js || result);
     }
-};
+  };
 
-/**
- * Load and execute a coffeescript file.
- *
- * @method coffeeRequire
- * @param {String} target Path to coffeescript file to load.
- */
-module.exports = function (target) {
+  /**
+   * Load and execute a coffeescript file.
+   *
+   * @method coffeeRequire
+   * @param {String} target Path to coffeescript file to load.
+   */
+  module.exports = function (target) {
     var file = {originalPath: target},
         code = fs.readFileSync(target).toString();
 
     coffeePreprocessor({
-        bare: true,
-        sourceMap: false
+      bare: true,
+      sourceMap: false
     }, code, file, function (err, result) {
-        if (!err) {
-            vm.runInThisContext(result);
-        } else {
-            console.log(err);
-        }
+      if (!err) {
+        vm.runInThisContext(result);
+      } else {
+        console.log(err);
+      }
     });
-};
+  };
 
+})();
     </pre>
 </div>
 

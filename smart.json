@@ -3,7 +3,7 @@
     "description": "Velocity-compatible unit test package with jasmine syntax",
     "homepage": "https://github.com/xolvio/jasmine-unit",
     "author": "Sam Hatoum",
-    "version": "0.1.22",
+    "version": "0.1.23",
     "git": "https://github.com/xolvio/jasmine-unit.git",
     "testPackage": true,
     "regex": "-jasmine-unit.(js|coffee)$",

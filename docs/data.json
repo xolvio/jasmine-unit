@@ -2,7 +2,7 @@
     "project": {
         "name": "Velocity Jasmine-Unit",
         "description": "Velocity-compatible unit test package with jasmine syntax",
-        "version": "v0.1.22"
+        "version": "v0.1.23"
     },
     "files": {
         "lib/coffee-require.js": {
@@ -88,7 +88,7 @@
     "classitems": [
         {
             "file": "lib/coffee-require.js",
-            "line": 18,
+            "line": 24,
             "description": "A coffee processor that can add source maps to compiled files\n\nThis is a modified version of https://github.com/karma-runner/karma-coffee-preprocessor",
             "itemtype": "method",
             "name": "coffeePreprocessor",
@@ -103,7 +103,7 @@
         },
         {
             "file": "lib/coffee-require.js",
-            "line": 54,
+            "line": 60,
             "description": "Load and execute a coffeescript file.",
             "itemtype": "method",
             "name": "coffeeRequire",

@@ -17,7 +17,7 @@
       path = Npm.require('path'),
       rimraf = Npm.require('rimraf'),
       testReportsPath = _p(pwd + '/tests/.reports/jasmine-unit'),
-      args = [],
+      args,
       jasmineCli,
       closeFunc,
       rerunTests,
@@ -31,18 +31,22 @@
   // OS-independent path to jasmine cli
   jasmineCli = _p(pwd + '/packages/jasmine-unit/.npm/package/node_modules/jasmine-node-reporter-fix/lib/jasmine-node/cli.js');
 
-  args.push(jasmineCli);
-  args.push('--coffee');
-  args.push('--color');
-  args.push('--verbose');
-  args.push('--match');
-  args.push('.*-jasmine-unit\.');
-  args.push('--matchall');
-  args.push('--junitreport');
-  args.push('--output');
-  args.push(testReportsPath);
-  args.push(_p(pwd + '/packages/jasmine-unit/lib'));
-  args.push(_p(pwd + '/tests'));
+
+  args = [
+    jasmineCli,
+    '--coffee',
+    '--color',
+    '--verbose',
+    '--nohelpers',
+    '--match',
+    '.*-jasmine-unit\.',
+    '--matchall',
+    '--junitreport',
+    '--output',
+    testReportsPath,
+    _p(pwd + '/packages/jasmine-unit/lib'),
+    _p(pwd + '/tests')
+  ];
 
 
   //////////////////////////////////////////////////////////////////////

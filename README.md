@@ -40,7 +40,7 @@ A [velocity](https://github.com/xolvio/velocity/)-compatible test framework whic
     
     ```bash
     $ mkdir tests
-    $ cp packages/jasmine-unit/SampleTests/examples-jasmine-unit.js tests
+    $ cp packages/jasmine-unit/sample-tests/examples-jasmine-unit.js tests
     ```
     
 7. Add stubs, if needed (see below)

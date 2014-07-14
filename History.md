@@ -1,5 +1,10 @@
 ## vNext
 
+## v0.1.24
+
+* Revert --nohelpers change; no way to tell jasmine-node to run a specific file
+
+
 ## v0.1.23
 
 * Include --nohelpers jasmine flag to avoid unexpected file loading

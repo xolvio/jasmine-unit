@@ -37,7 +37,6 @@
     '--coffee',
     '--color',
     '--verbose',
-    '--nohelpers',
     '--match',
     '.*-jasmine-unit\.',
     '--matchall',

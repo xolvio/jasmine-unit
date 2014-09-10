@@ -5,6 +5,26 @@ A [velocity](https://github.com/xolvio/velocity/)-compatible test framework whic
 To use jasmine syntax for integration-style tests which run in the Meteor context, please see the [`jasmine`](https://github.com/Sanjo/meteor-jasmine) test framework.
 
 
+### Meteor 0.9+ support
+
+A lot of the internals that `jasmine-unit` depends on have changed with the release of the new packaging system in Meteor 0.9.  This `jasmine-unit` package will therefore stay pre-0.9 only and development will continue in the `jasmine` package which will support both integration and unit testing.
+
+There is a working version of the `jasmine` package with support for server-side unit tests and the new package system; at the time of writing its still pre-release so there may be rough edges.  You can see a working example here:  https://github.com/meteor-velocity/velocity-example/tree/jasmine-only
+
+To try it out, clone the repo locally and then run `mrt install` to update the dependencies.
+
+Check the [`smart.json`](https://github.com/meteor-velocity/velocity-example/blob/jasmine-only/smart.json) file for an example of how to use the pre-release package in your own app.
+
+### Migrating from `jasmine-unit` to `jasmine`
+
+There are a few differences between the `jasmine` package and `jasmine-unit`:
+
+
+  1. `jasmine` uses jasmine 2.0.  Please see the [upgrading to jasmine 2.0](http://jasmine.github.io/2.0/upgrading.html) document for how to modify your unit tests (mostly spies)
+  2. test location - server-side unit tests are now located in the `tests/jasmine/server/unit` directory
+  3. no client-side unit testing.  The `jasmine` package currently does not support client-side unit tests (but does support client-side integration tests).  If this is important to you, please consider helping out by contributing a Pull Request.
+
+
 ### Quick-start
 
 To get up and running quickly, you may want to use the [`velocity-quick-start`](https://github.com/alanning/meteor-velocity-quick-start) which includes the `velocity-html-reporter` and sample tests for several test frameworks, including `jasmine-unit`.
